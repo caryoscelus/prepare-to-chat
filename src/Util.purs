@@ -44,6 +44,16 @@ prompt = promptI
 queryElement :: forall t. String -> Eff (dom :: DOM | t) (Maybe HTMLElement)
 queryElement s = document globalWindow >>= querySelector s
 
+foreign import scrollToEnd
+    """
+    function scrollToEnd (e) {
+        return function () {
+            e.scrollTop = e.scrollHeight;
+        }
+    }
+    """ :: forall t. HTMLElement -> Eff (dom :: DOM | t) Unit
+
+-- strings
 startsWith :: String -> String -> Boolean
 startsWith pat s = S.take (S.length pat) s == pat
 

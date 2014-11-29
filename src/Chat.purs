@@ -72,7 +72,13 @@ chatReload chat = do
     Just chatDiv <- queryElement "#chat"
     setInnerHTML (fullChatRender chat) chatDiv
     chatFocus
+    chatScroll
     return unit
+
+chatScroll :: forall t. Eff (dom :: DOM | t) Unit
+chatScroll = do
+    Just chatMsgDiv <- queryElement "#chat_messages_wrap"
+    scrollToEnd chatMsgDiv
 
 chatFocus :: forall t. Eff (dom :: DOM, trace :: Trace | t) Unit
 chatFocus = do
