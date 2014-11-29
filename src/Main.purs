@@ -75,11 +75,12 @@ onLoad :: DOMEvent -> Eff (dom :: DOM, trace :: Trace, chate :: ChatE) Unit
 onLoad _ = do
     chat <- setupChat
     setGlobalChat chat
+    withChat $ monstersAct
+    chat' <- getGlobalChat
+    chatReload chat'
     return unit
 
 setupChat :: forall t. Eff (dom :: DOM, trace :: Trace | t) Chat
 setupChat = do
     name <- prompt "Your name?"
-    let chat = addUser leetOne $ useredChat name
-    chatReload chat
-    return chat
+    return $ addUser leetOne $ useredChat name

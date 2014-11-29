@@ -15,21 +15,9 @@
 --  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --
 
-module LeetOne where
+module Eps where
 
-import Data.Maybe
+eps = 0.1
 
-import Types
-import Actions
-import Eps
-
-leetOne :: User
-leetOne = User { nick : "1337 1", hp : 100500, monster : "1337" }
-
-leetAct :: User -> ChatArrow
-leetAct leet (Chat chat) = action $ Chat chat
-  where
-    action = case chat.time of
-        t | ieq t 0 -> sendMessage leet $ "hello, " ++ maybe "??" id chat.me ++ "!"
-        t | ieq t 1 -> sendMessage leet "i am the l33t one!"
-        otherwise   -> id
+ieq :: Number -> Number -> Boolean
+ieq a b = (a - b) < eps && (b - a) < eps

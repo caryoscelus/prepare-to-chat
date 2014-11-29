@@ -28,6 +28,7 @@ import Util
 import Chat
 import Monsters
 import Debug
+import Eps
 
 repeatN :: forall a. Number -> a -> [a]
 repeatN n a | n < 1 = []
@@ -61,8 +62,6 @@ userDead (User user) = debug (user.nick ++ " " ++ show user.hp) $ user.hp <= 0
 
 spawnMonsters :: ChatArrow
 spawnMonsters (Chat chat) = addUsers (spawn $ spawnType chat.time) $ Chat chat
-
-eps = 0.1
 
 spawnType :: Number -> Maybe String
 spawnType n | n < 10 = Nothing
