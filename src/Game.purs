@@ -26,6 +26,7 @@ import Data.Tuple
 import Types
 import Util
 import Chat
+import Debug
 
 repeatN :: forall a. Number -> a -> [a]
 repeatN n a | n < 1 = []
@@ -86,6 +87,6 @@ userPrepares :: ChatArrow
 userPrepares = id
 
 userFights :: String -> ChatArrow
-userFights s = changeUser (userChangeHp ((-)1)) name
+userFights s = debug ("fight " ++ name) $ changeUser (userChangeHp ((-)1)) name
   where
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s

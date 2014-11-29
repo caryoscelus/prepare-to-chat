@@ -17,6 +17,8 @@
 
 module Types where
 
+import Control.Bind
+
 import Data.Maybe
 import Data.Map
 
@@ -76,4 +78,4 @@ changeMe f (Chat chat) =
         Nothing -> Chat chat
 
 changeUser :: UserArrow -> String -> ChatArrow
-changeUser f name = id
+changeUser f name = changeUsers $ alter ((=<<) (return <<< f)) name
