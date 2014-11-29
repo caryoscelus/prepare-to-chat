@@ -1,0 +1,25 @@
+{
+  "name": "f1gh7-teh-tr011",
+  "version": "0.0.1",
+  "authors": [
+    "caryoscelus <caryoscelus@gmx.com>"
+  ],
+  "description": "small textual game",
+  "license": "GPLv3+",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "purescript-simple-dom": "caryoscelus/purescript-simple-dom",
+    "purescript-smolder": "bodil/purescript-smolder",
+    "purescript-foldable-traversable": "purescript/purescript-foldable-traversable",
+    "purescript-strings": "purescript/purescript-strings"
+  },
+  "resolutions": {
+    "purescript-maps": "0.1.3"
+  }
+}
