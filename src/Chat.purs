@@ -60,12 +60,12 @@ putMessage :: Message -> ChatArrow
 putMessage msg (Chat chat) = Chat $ chat { messages = chat.messages ++ [msg] }
 
 makeMessage :: String -> String -> ChatArrow
-makeMessage nick text = putMessage $ Message
-    { time : "??"
+makeMessage nick text (Chat chat) = putMessage (Message
+    { time : show chat.time
     , nick : nick
     , text : text
     , msgType : Normal
-    }
+    }) $ Chat chat
 
 chatReload :: forall t. Chat -> Eff (dom :: DOM, trace :: Trace | t) Unit
 chatReload chat = do
