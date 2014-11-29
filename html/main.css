@@ -1,0 +1,55 @@
+body {
+    background-color: #bbb;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+div#chat {
+    width: 80%;
+    padding-left: 10%;
+    padding-right: 10%;
+    display: table;
+    height: 500px;
+}
+
+div#chat_main {
+    display: table;
+    width: 100%;
+}
+
+div#chat_messages {
+    width: 70%;
+    display: table-cell;
+}
+
+div#chat_messages_wrap {
+    overflow: auto;
+    height: 500px;
+}
+
+div#chat_users {
+    width: 30%;
+    display: table-cell;
+    height: 100%;
+    overflow: scroll;
+}
+
+div#chat_input {
+    display: table;
+}
+
+#chat_input_nick {
+    width: 20%;
+    display: table-cell;
+}
+
+#chat_input_line {
+    background-color: #bbb;
+    border: 2px solid #444;
+    color: #000;
+    width: 80%
+    display: table-cell;
+}
