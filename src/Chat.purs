@@ -42,7 +42,7 @@ import Util
 import Types
 
 emptyChat :: Chat
-emptyChat = Chat { users : M.fromList [], messages : [], me : Nothing, time : 0 }
+emptyChat = Chat { users : M.fromList [], messages : [], me : "??", time : 0, inputLog : [], inputLogA : [], inputNow : "" }
 
 addUser :: User -> ChatArrow
 addUser (User user) (Chat chat) =
@@ -53,7 +53,7 @@ addUser (User user) (Chat chat) =
 addUsers :: [User] -> ChatArrow
 addUsers users chat = foldl (flip addUser) chat users
 
-setMe :: Maybe String -> ChatArrow
+setMe :: String -> ChatArrow
 setMe me (Chat chat) = Chat $ chat { me = me }
 
 putMessage :: Message -> ChatArrow
@@ -66,6 +66,34 @@ makeMessage nick text (Chat chat) = putMessage (Message
     , text : text
     , msgType : Normal
     }) $ Chat chat
+
+userMessage :: String -> ChatArrow
+userMessage text (Chat chat) =
+        makeMessage chat.me text
+    >>> changeLog ((:) text)
+      $ Chat chat
+
+loopLogUp :: String -> ChatArrow
+loopLogUp s (Chat chat) =
+    if chat.inputLog /= []
+        then Chat $ chat
+            { inputLog = drop 1 chat.inputLog
+            , inputNow = maybe "??" id (head chat.inputLog)
+            , inputLogA = s : chat.inputLogA
+            } 
+        else Chat $ chat
+            { inputNow = s
+            }
+
+loopLogDown :: String -> ChatArrow
+loopLogDown s (Chat chat) =
+    if chat.inputLogA /= []
+        then Chat $ chat
+            { inputLogA = drop 1 chat.inputLogA
+            , inputNow = maybe "??" id (head chat.inputLogA)
+            , inputLog = s : chat.inputLog
+            } 
+        else Chat chat
 
 chatReload :: forall t. Chat -> Eff (dom :: DOM, trace :: Trace | t) Unit
 chatReload chat = do
@@ -87,7 +115,7 @@ chatFocus = do
     return unit
 
 useredChat :: String -> Chat
-useredChat name = setMe (Just name) <<< addUser (userUser name) $ emptyChat
+useredChat name = setMe name <<< addUser (userUser name) $ emptyChat
 
 attrId = attribute "id"
 span' = Parent "span"
@@ -109,5 +137,5 @@ fullChatRender (Chat chat) = render $ do
                 foldl (>>) (return unit) $ map ((p ! className "message") <<< text <<< show) chat.messages
         div ! attrId "chat_users" $ foldl (>>) (return unit) $ map ((p ! className "user") <<< text) $ M.keys chat.users
     div ! attrId "chat_input" $ do
-        span' ! attrId "chat_input_nick" $ text $ "< "++ maybe "??" id chat.me ++" >"
+        span' ! attrId "chat_input_nick" $ text $ "< "++ chat.me ++" >"
         input ! attrId "chat_input_line" ! type' "text"

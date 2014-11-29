@@ -27,7 +27,7 @@ import Data.Array
 import qualified Data.String as S
 
 import Data.DOM.Simple.Document ()
-import Data.DOM.Simple.Element (setInnerHTML, value)
+import Data.DOM.Simple.Element (setInnerHTML, value, setValue)
 import Data.DOM.Simple.Window (globalWindow, document, location, getLocation)
 import Data.DOM.Simple.Types
 import Data.DOM.Simple.Events (UIEvent, UIEventType(..), addUIEventListener, KeyboardEvent, KeyboardEventType(..), addKeyboardEventListener, key)
@@ -47,9 +47,19 @@ onPress :: DOMEvent -> Eff (dom :: DOM, trace :: Trace, chate :: ChatE) Unit
 onPress ev = do
     k <- key ev
     case k of
-         "Enter" -> doSendMessage
-         otherwise -> return unit
+         "Enter"    -> doSendMessage
+         "Up"       -> logRoll loopLogUp
+         "Down"     -> logRoll loopLogDown
+         otherwise  -> return unit
     return unit
+
+logRoll :: forall t. (String -> ChatArrow) -> Eff (dom :: DOM, chate :: ChatE | t) Unit
+logRoll f = do
+    Just el <- queryElement "#chat_input_line"
+    msg <- value $ el
+    withChat $ f msg
+    Chat ch <- getGlobalChat
+    setValue ch.inputNow el
 
 doSendMessage :: Eff (dom :: DOM, trace :: Trace, chate :: ChatE) Unit
 doSendMessage = do
@@ -58,14 +68,12 @@ doSendMessage = do
     case msg of
         ""                          -> trace "empty message"
         _ | startsWith "/me " msg   -> do
-            Chat ch <- getGlobalChat
-            withChat $ makeMessage (maybe "??" id ch.me) msg
+            withChat $ userMessage msg
             withChat $ processUserTurn $ S.drop 4 msg
             withChat $ processNPCs 1.0
         _ | startsWith "/" msg      -> trace "unknown command"
         otherwise                   -> do
-            Chat ch <- getGlobalChat
-            withChat $ makeMessage (maybe "??" id ch.me) msg
+            withChat $ userMessage msg
             withChat $ processNPCs 1.0
     ch <- getGlobalChat
     chatReload ch

@@ -53,8 +53,11 @@ userChangeHp f (User user) = User $ user { hp = f user.hp }
 data Chat = Chat
     { users :: Map String User
     , messages :: [Message]
-    , me :: Maybe String
+    , me :: String
     , time :: Number
+    , inputLog :: [String]
+    , inputNow :: String
+    , inputLogA :: [String]
     }
 
 -- type ChatArrow a = Chat -> Tuple Chat a
@@ -67,10 +70,10 @@ changeUsers :: (Map String User -> Map String User) -> ChatArrow
 changeUsers f (Chat chat) = Chat $ chat { users = f chat.users}
 
 changeMe :: UserArrow -> ChatArrow
-changeMe f (Chat chat) =
-    case chat.me of
-        Just me -> changeUser f me $ Chat chat
-        Nothing -> Chat chat
+changeMe f (Chat chat) = changeUser f chat.me $ Chat chat
 
 changeUser :: UserArrow -> String -> ChatArrow
 changeUser f name = changeUsers $ alter (maybe Nothing $ Just <<< f) name
+
+changeLog :: ([String] -> [String]) -> ChatArrow
+changeLog f (Chat chat) = Chat $ chat { inputLog = f chat.inputLog }
