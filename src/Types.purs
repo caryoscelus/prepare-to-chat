@@ -18,6 +18,7 @@
 module Types where
 
 import Data.Maybe
+import Data.Map
 
 import Monsters
 
@@ -46,9 +47,6 @@ type UserArrow = User -> User
 userUser :: String -> User
 userUser s = User { nick : s, hp : 80, monster : "human" }
 
-nullUser :: User
-nullUser = User { nick : "??", hp : 0, monster : "??" }
-
 monsterUser :: String -> User
 monsterUser s = User { nick : s, hp : getMonsterHp s, monster : s }
 
@@ -56,9 +54,9 @@ userChangeHp :: (Number -> Number) -> UserArrow
 userChangeHp f (User user) = User $ user { hp = f user.hp }
 
 data Chat = Chat
-    { users :: [User]
+    { users :: Map String User
     , messages :: [Message]
-    , me :: Maybe User
+    , me :: Maybe String
     , time :: Number
     }
 
@@ -68,11 +66,14 @@ type ChatArrow = Chat -> Chat
 changeTime :: (Number -> Number) -> ChatArrow
 changeTime f (Chat chat) = Chat $ chat { time = f chat.time }
 
-changeUsers :: ([User] -> [User]) -> ChatArrow
+changeUsers :: (Map String User -> Map String User) -> ChatArrow
 changeUsers f (Chat chat) = Chat $ chat { users = f chat.users}
 
-changeMe :: (Maybe User -> Maybe User) -> ChatArrow
-changeMe f (Chat chat) = Chat $ chat { me = f chat.me }
+changeMe :: UserArrow -> ChatArrow
+changeMe f (Chat chat) =
+    case chat.me of
+        Just me -> changeUser f me $ Chat chat
+        Nothing -> Chat chat
 
 changeUser :: UserArrow -> String -> ChatArrow
 changeUser f name = id

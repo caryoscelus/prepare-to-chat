@@ -58,13 +58,13 @@ doSendMessage = do
         ""                          -> trace "empty message"
         _ | startsWith "/me " msg   -> do
             Chat ch <- getGlobalChat
-            withChat $ makeMessage (maybe nullUser id ch.me) msg
+            withChat $ makeMessage (maybe "??" id ch.me) msg
             withChat $ processUserTurn $ S.drop 4 msg
             withChat $ processNPCs 1.0
         _ | startsWith "/" msg      -> trace "unknown command"
         otherwise                   -> do
             Chat ch <- getGlobalChat
-            withChat $ makeMessage (maybe nullUser id ch.me) msg
+            withChat $ makeMessage (maybe "??" id ch.me) msg
             withChat $ processNPCs 1.0
     ch <- getGlobalChat
     chatReload ch

@@ -26,6 +26,7 @@ import Data.Foldable
 import Data.Traversable
 import Data.Array
 import Data.Maybe
+import qualified Data.Map as M
 -- import Data.Tuple
 
 import Data.DOM.Simple.Types
@@ -41,21 +42,27 @@ import Util
 import Types
 
 emptyChat :: Chat
-emptyChat = Chat { users : [], messages : [], me : Nothing, time : 0 }
+emptyChat = Chat { users : M.fromList [], messages : [], me : Nothing, time : 0 }
 
 addUser :: User -> ChatArrow
-addUser user (Chat chat) = Chat $ chat { users = chat.users ++ [user] }
+addUser (User user) (Chat chat) =
+    if M.member user.nick chat.users
+        then addUser (User $ user { nick = user.nick++"_" } ) (Chat chat)
+        else Chat $ chat { users = M.insert user.nick (User user) chat.users }
 
-setMe :: Maybe User -> ChatArrow
+addUsers :: [User] -> ChatArrow
+addUsers users chat = foldl (flip addUser) chat users
+
+setMe :: Maybe String -> ChatArrow
 setMe me (Chat chat) = Chat $ chat { me = me }
 
 putMessage :: Message -> ChatArrow
 putMessage msg (Chat chat) = Chat $ chat { messages = chat.messages ++ [msg] }
 
-makeMessage :: User -> String -> ChatArrow
-makeMessage (User user) text = putMessage $ Message
+makeMessage :: String -> String -> ChatArrow
+makeMessage nick text = putMessage $ Message
     { time : "??"
-    , nick : user.nick
+    , nick : nick
     , text : text
     , msgType : Normal
     }
@@ -78,7 +85,7 @@ setupChat :: forall t. Eff (dom :: DOM, trace :: Trace | t) Chat
 setupChat = do
     name <- prompt "Your name?"
     let user = userUser name
-    let chat = setMe (Just user) <<< addUser user $ emptyChat
+    let chat = setMe (Just name) <<< addUser user $ emptyChat
     chatReload chat
     return chat
 
@@ -100,7 +107,7 @@ fullChatRender (Chat chat) = render $ do
         div ! attrId "chat_messages" $
             div ! attrId "chat_messages_wrap" $
                 foldl (>>) (return unit) $ map ((p ! className "message") <<< text <<< show) chat.messages
-        div ! attrId "chat_users" $ foldl (>>) (return unit) $ map ((p ! className "user") <<< text <<< userGetNick) chat.users
+        div ! attrId "chat_users" $ foldl (>>) (return unit) $ map ((p ! className "user") <<< text) $ M.keys chat.users
     div ! attrId "chat_input" $ do
-        span' ! attrId "chat_input_nick" $ text $ "< "++ maybe "??" userGetNick chat.me ++" >"
+        span' ! attrId "chat_input_nick" $ text $ "< "++ maybe "??" id chat.me ++" >"
         input ! attrId "chat_input_line" ! type' "text"

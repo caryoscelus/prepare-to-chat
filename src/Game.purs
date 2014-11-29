@@ -20,9 +20,12 @@ module Game where
 import Data.Foldable
 import Data.Array
 import Data.Maybe
+import qualified Data.Map as M
+import Data.Tuple
 
 import Types
 import Util
+import Chat
 
 repeatN :: forall a. Number -> a -> [a]
 repeatN n a | n < 1 = []
@@ -40,22 +43,22 @@ stepNPCs =
     >>> killDead
     >>> monstersAct
     >>> killDead
-    >>> checkLooser
+--     >>> checkLooser
     >>> spawnMonsters
 --     >>> checkWinner
 
 killDead :: ChatArrow
-killDead = changeUsers $ filter (not <<< userDead)
+killDead = changeUsers $ M.toList >>> filter (not <<< userDead <<< snd) >>> M.fromList
 
 userDead :: User -> Boolean
 userDead (User user) = user.hp <= 0
 
-checkLooser :: ChatArrow
-checkLooser = changeMe $ \mu ->
-    mu >>= \user -> if userDead user then Nothing else Just user
+-- checkLooser :: ChatArrow
+-- checkLooser = changeMe $ \mu ->
+--     mu >>= \user -> if userDead user then Nothing else Just user
 
 spawnMonsters :: ChatArrow
-spawnMonsters (Chat chat) = Chat $ chat { users = chat.users ++ spawn (spawnType chat.time) }
+spawnMonsters (Chat chat) = addUsers (spawn $ spawnType chat.time) $ Chat chat
 
 eps = 0.1
 
