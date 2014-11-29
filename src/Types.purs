@@ -30,11 +30,15 @@ data Message = Message
     { time :: Time
     , nick :: String
     , text :: String
-    , msgType :: MessageType
+    , t :: MessageType
     }
 
 instance showMessage :: Show Message where
-    show (Message msg) = (show msg.time) ++ " < " ++ msg.nick ++ " > " ++ msg.text
+    show (Message msg) =
+        case msg.t of
+            Normal  -> (show msg.time) ++ " < " ++ msg.nick ++ " > " ++ msg.text
+            Me      -> (show msg.time) ++ " " ++ msg.nick ++ " " ++ msg.text
+            _       -> (show msg.time) ++ "??" ++ msg.text
 
 data User = User
     { nick :: String

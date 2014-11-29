@@ -59,17 +59,17 @@ setMe me (Chat chat) = Chat $ chat { me = me }
 putMessage :: Message -> ChatArrow
 putMessage msg (Chat chat) = Chat $ chat { messages = chat.messages ++ [msg] }
 
-makeMessage :: String -> String -> ChatArrow
-makeMessage nick text (Chat chat) = putMessage (Message
+makeMessage :: MessageType -> String -> String -> ChatArrow
+makeMessage t nick text (Chat chat) = putMessage (Message
     { time : show chat.time
     , nick : nick
     , text : text
-    , msgType : Normal
+    , t    : t
     }) $ Chat chat
 
 userMessage :: String -> ChatArrow
 userMessage text (Chat chat) =
-        makeMessage chat.me text
+        makeMessage Normal chat.me text
     >>> reLog
     >>> changeLog ((:) text)
       $ Chat chat

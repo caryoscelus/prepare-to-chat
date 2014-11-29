@@ -21,7 +21,9 @@ import Types
 import Chat
 
 fightUser :: User -> Number -> ChatArrow
-fightUser mob n = changeMe (userChangeHp ((+) (-n))) >>> sendMessage mob "/me attacks you"
+fightUser (User mob) n =
+        changeMe (userChangeHp ((+) (-n)))
+    >>> makeMessage Me mob.nick "attacks you"
 
 sendMessage :: User -> String -> ChatArrow
-sendMessage (User user) = makeMessage user.nick
+sendMessage (User user) = makeMessage Normal user.nick
