@@ -70,8 +70,15 @@ makeMessage nick text (Chat chat) = putMessage (Message
 userMessage :: String -> ChatArrow
 userMessage text (Chat chat) =
         makeMessage chat.me text
+    >>> reLog
     >>> changeLog ((:) text)
       $ Chat chat
+
+reLog :: ChatArrow
+reLog (Chat chat) = Chat $ chat
+    { inputLog = reverse chat.inputLogA ++ chat.inputLog
+    , inputLogA = []
+    }
 
 loopLogUp :: String -> ChatArrow
 loopLogUp s (Chat chat) =
