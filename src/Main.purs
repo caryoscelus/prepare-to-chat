@@ -75,3 +75,10 @@ onLoad _ = do
     chat <- setupChat
     setGlobalChat chat
     return unit
+
+setupChat :: forall t. Eff (dom :: DOM, trace :: Trace | t) Chat
+setupChat = do
+    name <- prompt "Your name?"
+    let chat = useredChat name
+    chatReload chat
+    return chat

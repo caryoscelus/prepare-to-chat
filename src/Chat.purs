@@ -80,14 +80,8 @@ chatFocus = do
     focus chatInput
     return unit
 
--- | ask for name and start chat
-setupChat :: forall t. Eff (dom :: DOM, trace :: Trace | t) Chat
-setupChat = do
-    name <- prompt "Your name?"
-    let user = userUser name
-    let chat = setMe (Just name) <<< addUser user $ emptyChat
-    chatReload chat
-    return chat
+useredChat :: String -> Chat
+useredChat name = setMe (Just name) <<< addUser (userUser name) $ emptyChat
 
 attrId = attribute "id"
 span' = Parent "span"
