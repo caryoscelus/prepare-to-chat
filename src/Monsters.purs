@@ -26,5 +26,5 @@ getMonsterHp "rat" = 6
 
 getMonsterAct :: String -> User -> ChatArrow
 getMonsterAct "1337" leet = leetAct leet
-getMonsterAct "rat" rat = fightUser 1
+getMonsterAct "rat" rat = fightUser rat 1
 getMonsterAct _ _ = id

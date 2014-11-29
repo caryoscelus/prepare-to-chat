@@ -20,8 +20,8 @@ module Actions where
 import Types
 import Chat
 
-fightUser :: Number -> ChatArrow
-fightUser n = changeMe (userChangeHp ((+) (-n)))
+fightUser :: User -> Number -> ChatArrow
+fightUser mob n = changeMe (userChangeHp ((+) (-n))) >>> sendMessage mob "/me attacks you"
 
 sendMessage :: User -> String -> ChatArrow
 sendMessage (User user) = makeMessage user.nick
