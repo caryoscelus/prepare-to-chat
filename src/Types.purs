@@ -20,7 +20,6 @@ module Types where
 import Data.Maybe
 import Data.Map
 
-import Monsters
 import Debug
 
 data MessageType = Normal | Me | Status | System
@@ -46,10 +45,7 @@ data User = User
 type UserArrow = User -> User
 
 userUser :: String -> User
-userUser s = User { nick : s, hp : 80, monster : "human" }
-
-monsterUser :: String -> User
-monsterUser s = User { nick : s, hp : getMonsterHp s, monster : s }
+userUser s = User { nick : s, hp : 80, monster : "user" }
 
 userChangeHp :: (Number -> Number) -> UserArrow
 userChangeHp f (User user) = User $ user { hp = f user.hp }

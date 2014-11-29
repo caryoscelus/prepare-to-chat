@@ -37,6 +37,7 @@ import Util
 import Types
 import Globals
 import Game
+import LeetOne
 
 main = do
     addUIEventListener LoadEvent onLoad globalWindow
@@ -79,6 +80,6 @@ onLoad _ = do
 setupChat :: forall t. Eff (dom :: DOM, trace :: Trace | t) Chat
 setupChat = do
     name <- prompt "Your name?"
-    let chat = useredChat name
+    let chat = addUser leetOne $ useredChat name
     chatReload chat
     return chat

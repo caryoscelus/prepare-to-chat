@@ -26,6 +26,7 @@ import Data.Tuple
 import Types
 import Util
 import Chat
+import Monsters
 import Debug
 
 repeatN :: forall a. Number -> a -> [a]
@@ -73,7 +74,10 @@ spawn Nothing = []
 spawn (Just monsterType) = [monsterUser monsterType]
 
 monstersAct :: ChatArrow
-monstersAct = id
+monstersAct (Chat chat) = foldl (flip monsterAct) (Chat chat) (M.values chat.users)
+
+monsterAct :: User -> ChatArrow
+monsterAct (User user) = getMonsterAct user.monster $ User user
 
 -- checkWinner :: ChatArrow
 -- checkWinner = id
@@ -90,3 +94,6 @@ userFights :: String -> ChatArrow
 userFights s = debug ("fight " ++ name) $ changeUser (userChangeHp ((+)(-1))) name
   where
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s
+
+monsterUser :: String -> User
+monsterUser s = User { nick : s, hp : getMonsterHp s, monster : s }

@@ -15,16 +15,13 @@
 --  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --
 
-module Monsters where
+module LeetOne where
 
-import Actions
 import Types
-import LeetOne
+import Actions
 
-getMonsterHp :: String -> Number
-getMonsterHp "rat" = 6
+leetOne :: User
+leetOne = User { nick : "1337 1", hp : 100500, monster : "1337" }
 
-getMonsterAct :: String -> User -> ChatArrow
-getMonsterAct "1337" leet = leetAct leet
-getMonsterAct "rat" rat = fightUser 1
-getMonsterAct _ _ = id
+leetAct :: User -> ChatArrow
+leetAct me = sendMessage me "hello, i'm the leet one!"
