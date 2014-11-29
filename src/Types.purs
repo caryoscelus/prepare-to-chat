@@ -17,12 +17,11 @@
 
 module Types where
 
-import Control.Bind
-
 import Data.Maybe
 import Data.Map
 
 import Monsters
+import Debug
 
 data MessageType = Normal | Me | Status | System
 
@@ -78,4 +77,4 @@ changeMe f (Chat chat) =
         Nothing -> Chat chat
 
 changeUser :: UserArrow -> String -> ChatArrow
-changeUser f name = changeUsers $ alter ((=<<) (return <<< f)) name
+changeUser f name = changeUsers $ alter (maybe Nothing $ Just <<< f) name

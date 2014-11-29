@@ -52,7 +52,7 @@ killDead :: ChatArrow
 killDead = changeUsers $ M.toList >>> filter (not <<< userDead <<< snd) >>> M.fromList
 
 userDead :: User -> Boolean
-userDead (User user) = user.hp <= 0
+userDead (User user) = debug (user.nick ++ " " ++ show user.hp) $ user.hp <= 0
 
 -- checkLooser :: ChatArrow
 -- checkLooser = changeMe $ \mu ->
@@ -87,6 +87,6 @@ userPrepares :: ChatArrow
 userPrepares = id
 
 userFights :: String -> ChatArrow
-userFights s = debug ("fight " ++ name) $ changeUser (userChangeHp ((-)1)) name
+userFights s = debug ("fight " ++ name) $ changeUser (userChangeHp ((+)(-1))) name
   where
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s
