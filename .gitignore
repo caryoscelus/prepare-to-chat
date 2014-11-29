@@ -1,0 +1,6 @@
+bower_components/
+dist/
+node_modules/
+.psci
+.psci_modules/
+html/config.js
