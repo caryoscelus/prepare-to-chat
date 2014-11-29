@@ -42,7 +42,7 @@ main = do
     addUIEventListener LoadEvent onLoad globalWindow
     addKeyboardEventListener KeypressEvent onPress globalWindow
 
-onPress :: DOMEvent -> Eff (dom :: DOM, trace :: Trace, chate :: ChatE, gamee :: GameE) Unit
+onPress :: DOMEvent -> Eff (dom :: DOM, trace :: Trace, chate :: ChatE) Unit
 onPress ev = do
     k <- key ev
     case k of
@@ -50,7 +50,7 @@ onPress ev = do
          otherwise -> return unit
     return unit
 
-doSendMessage :: Eff (dom :: DOM, trace :: Trace, chate :: ChatE, gamee :: GameE) Unit
+doSendMessage :: Eff (dom :: DOM, trace :: Trace, chate :: ChatE) Unit
 doSendMessage = do
     Just el <- queryElement "#chat_input_line"
     msg <- value $ el
