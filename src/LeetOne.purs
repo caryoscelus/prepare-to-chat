@@ -56,7 +56,7 @@ killMessages =
     , "eeh, can't you kill "
     , "please, kill "
     , "stop shambling around, kill "
-    , "may i ask you to assinate "
+    , "may i ask you to assassinate "
     ]
 
 -- UNSAFE

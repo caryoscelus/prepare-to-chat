@@ -31,7 +31,7 @@ import Data.DOM.Simple.Document ()
 import Data.DOM.Simple.Element (setInnerHTML, value, setValue)
 import Data.DOM.Simple.Window (globalWindow, document, location, getLocation)
 import Data.DOM.Simple.Types
-import Data.DOM.Simple.Events (UIEvent, UIEventType(..), addUIEventListener, KeyboardEvent, KeyboardEventType(..), addKeyboardEventListener, key)
+import Data.DOM.Simple.Events (UIEvent, UIEventType(..), addUIEventListener, KeyboardEvent, KeyboardEventType(..), addKeyboardEventListener, key, keyCode)
 
 import Chat
 import Util
@@ -47,8 +47,10 @@ main = do
 onPress :: DOMEvent -> Eff (dom :: DOM, trace :: Trace, chate :: ChatE) Unit
 onPress ev = do
     k <- key ev
+    k' <- keyCode ev
+    let isEnter = k == "Enter" || k' == 13
     case k of
-         "Enter"    -> doSendMessage
+         _ | isEnter-> doSendMessage
          "Up"       -> logRoll loopLogUp
          "Down"     -> logRoll loopLogDown
          otherwise  -> return unit
