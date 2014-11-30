@@ -30,6 +30,7 @@ import Monsters
 import Debug
 import Eps
 import Actions
+import Random
 
 processNPCs :: Number -> ChatArrow
 processNPCs t chat = applyN t stepNPCs chat
@@ -91,12 +92,12 @@ userPrepares :: ChatArrow
 userPrepares = id
 
 userHits :: String -> ChatArrow
-userHits s = debug ("hit " ++ name) $ changeUser (userChangeHp ((+)(-1))) name
+userHits s = debug ("hit " ++ name) $ changeUser (userChangeHp ((+)(-(1+randomRange 1)))) name
   where
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s
 
 userHeals :: ChatArrow
-userHeals = changeMe (userChangeHp ((+)1))
+userHeals = changeMe (userChangeHp ((+)(1+randomRange 1)))
 
 monsterUser :: String -> User
 monsterUser s = User { nick : s, maxHp : getMonsterHp s, hp : getMonsterHp s, monster : s }
