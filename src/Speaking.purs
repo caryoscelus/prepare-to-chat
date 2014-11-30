@@ -48,3 +48,33 @@ getCompletelyRandomQuote :: forall t. Eff (quote :: Quote | t) String
 getCompletelyRandomQuote = do
     author <- getRandomAuthor
     getRandomAuthorQuote author
+
+-- UNSAFE IMPERATIVE VERSIONS, DO NOT USE
+foreign import randomAuthor
+    """
+    function randomAuthor (_) {
+        var _Mkeys = Object.keys(_allQuotes);
+        var n = Math.floor(_Mkeys.length * Math.random());
+        return _Mkeys[n];
+    }
+    """ :: Unit -> String
+
+foreign import randomAuthorQuote
+    """
+    function randomAuthorQuote (author) {
+        var _Mquotes = _allQuotes[author];
+        var n = Math.floor(_Mquotes.length * Math.random());
+        return _Mquotes[n];
+    }
+    """ :: String -> String
+
+foreign import completelyRandomQuote
+    """
+    function completelyRandomQuote (_) {
+        var _Mkeys = Object.keys(_allQuotes);
+        var n = Math.floor(_Mkeys.length * Math.random());
+        var _Mquotes = _allQuotes[_Mkeys[n]];
+        var n = Math.floor(_Mquotes.length * Math.random());
+        return _Mquotes[n];
+    }
+    """ :: Unit -> String

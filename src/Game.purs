@@ -21,6 +21,7 @@ import Data.Foldable
 import Data.Array
 import Data.Maybe
 import qualified Data.Map as M
+import qualified Data.String as S
 import Data.Tuple
 
 import Types
@@ -31,6 +32,7 @@ import Debug
 import Eps
 import Actions
 import Random
+import Speaking
 
 processNPCs :: Number -> ChatArrow
 processNPCs t = applyN t stepNPCs
@@ -66,7 +68,8 @@ spawnMonsters (Chat chat) = addUsers (spawn $ spawnType chat.time) $ Chat chat
 
 spawnType :: Number -> Maybe String
 spawnType n | n < 4 = Nothing
-spawnType n | n < 40 = if (n % 1 < eps) && (n % 5 < eps) then Just "rat" else Nothing
+spawnType n | n < 30 = if (n % 1 < eps) && (n % 5 < eps) then Just "rat" else Nothing
+spawnType n | n < 33 = if ieq n 32 then Just ("speaking "++randomAuthor unit) else Nothing
 spawnType _ = Nothing
 
 spawn :: Maybe String -> [User]
@@ -103,9 +106,15 @@ userHeals = readMe $ \(Just (User me)) ->
         changeMe (userChangeHp ((+)(1+randomRange 1+me.prepared*3)))
     >>> changeMe (userChangePrepared (const 0))
 
+stripSpeaking :: String -> String
+stripSpeaking s =
+    if startsWith "speaking " s
+        then S.drop 9 s
+        else s
+
 monsterUser :: String -> User
 monsterUser s = let mhp = getMonsterHp s in User $ user
-    { nick = s
+    { nick = stripSpeaking s
     , maxHp = mhp
     , hp = mhp
     , monster = s

@@ -21,10 +21,14 @@ import Actions
 import Types
 import LeetOne
 import Random
+import Speaking
+import Util
 
 -- !! UNSAFE RANDOM
 getMonsterHp :: String -> Number
 getMonsterHp "rat" = 4 + randomRange 3
+getMonsterHp s | startsWith "speaking " s = 20 + randomRange 10
+getMonsterHp _ = 1
 
 getMonsterAct :: String -> User -> ChatArrow
 getMonsterAct "1337" leet = leetAct leet
