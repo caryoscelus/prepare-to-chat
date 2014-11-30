@@ -17,11 +17,12 @@
 
 module Monsters where
 
+import qualified Data.String as S
+
 import Actions
 import Types
 import LeetOne
 import Random
-import Speaking
 import Util
 
 -- !! UNSAFE RANDOM
@@ -33,4 +34,5 @@ getMonsterHp _ = 1
 getMonsterAct :: String -> User -> ChatArrow
 getMonsterAct "1337" leet = leetAct leet
 getMonsterAct "rat" rat = fightUser rat 1
+getMonsterAct s mob | startsWith "speaking " s = speakingAct mob (S.drop 9 s)
 getMonsterAct _ _ = id

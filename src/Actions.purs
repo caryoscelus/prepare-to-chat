@@ -19,6 +19,7 @@ module Actions where
 
 import Types
 import Chat
+import Speaking
 
 fightUser :: User -> Number -> ChatArrow
 fightUser (User mob) n =
@@ -33,3 +34,6 @@ meMessage (User user) = makeMessage Me user.nick
 
 statusMessage :: User -> String -> ChatArrow
 statusMessage (User user) = makeMessage Status user.nick
+
+speakingAct :: User -> String -> ChatArrow
+speakingAct user = sendMessage user <<< randomAuthorQuote
