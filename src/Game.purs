@@ -89,15 +89,22 @@ processUserTurn s | startsWith "heal" s = userHeals
 processUserTurn _ = id
 
 userPrepares :: ChatArrow
-userPrepares = id
+userPrepares = changeMe $ userChangePrepared ((+)1)
 
 userHits :: String -> ChatArrow
-userHits s = debug ("hit " ++ name) $ changeUser (userChangeHp ((+)(-(1+randomRange 1)))) name
+userHits s =
+        changeUser (userChangeHp ((+)(-(1+randomRange 1)))) name
+    >>> changeMe (userChangePrepared (const 0))
   where
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s
 
 userHeals :: ChatArrow
-userHeals = changeMe (userChangeHp ((+)(1+randomRange 1)))
+userHeals = changeMe $ userChangeHp ((+)(1+randomRange 1))
 
 monsterUser :: String -> User
-monsterUser s = User { nick : s, maxHp : getMonsterHp s, hp : getMonsterHp s, monster : s }
+monsterUser s = User $ user
+    { nick = s
+    , maxHp = getMonsterHp s
+    , hp = getMonsterHp s
+    , monster = s
+    }

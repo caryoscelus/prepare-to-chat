@@ -24,7 +24,12 @@ import Actions
 import Eps
 
 leetOne :: User
-leetOne = User { nick : "1337 1", hp : 100500, maxHp : 100500, monster : "1337" }
+leetOne = User $ user
+    { nick = "1337 1"
+    , hp = 100500
+    , maxHp = 100500
+    , monster = "1337"
+    }
 
 leetAct :: User -> ChatArrow
 leetAct leet (Chat chat) = action $ Chat chat

@@ -41,20 +41,38 @@ instance showMessage :: Show Message where
             Me      -> (show msg.time) ++ " " ++ msg.nick ++ " " ++ msg.text
             _       -> (show msg.time) ++ "??" ++ msg.text
 
-data User = User
+type UserT =
     { nick :: String
     , hp :: Number
     , maxHp :: Number
     , monster :: String
+    , prepared :: Number
     }
+data User = User UserT
 
 type UserArrow = User -> User
 
+user :: UserT
+user =
+    { nick : ""
+    , hp : 0
+    , maxHp : 0
+    , monster : ""
+    , prepared : 0
+    }
+
 userUser :: String -> User
-userUser s = User { nick : s, hp : 80, maxHp : 80, monster : "user" }
+userUser s = User $ user
+    { nick = s
+    , hp = 80
+    , maxHp = 80
+    }
 
 userChangeHp :: (Number -> Number) -> UserArrow
 userChangeHp f (User user) = User $ user { hp = min (f user.hp) user.maxHp }
+
+userChangePrepared :: (Number -> Number) -> UserArrow
+userChangePrepared f (User user) = User $ user { prepared = f user.prepared }
 
 data Chat = Chat
     { users :: Map String User
