@@ -1,15 +1,5 @@
 {
-  "name": "f1gh7-teh-tr011",
-  "version": "0.0.1",
-  "description": "small textual game",
-  "main": "index.js",
   "private" : true,
-  "bin": {
-    "comment-anything-fp-client": "index.js"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "caryoscelus <caryoscelus@gmx.com>",
   "license": "GPLv3+",
   "dependencies": {

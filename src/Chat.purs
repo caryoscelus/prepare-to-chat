@@ -192,10 +192,14 @@ renderUser (User user) = do
 fullChatRender :: Chat -> String
 fullChatRender (Chat chat) = render $ do
     div ! attrId "chat_main" $ do
-        div ! attrId "chat_messages" $
+        div ! attrId "chat_messages" $ do
+            h2 $ text "Messages"
             div ! attrId "chat_messages_wrap" $
                 foldl (>>) (return unit) $ map ((p ! className "message") <<< renderMessage) chat.messages
-        div ! attrId "chat_users" $ foldl (>>) (return unit) $ map ((p ! className "user") <<< renderUser) $ M.values chat.users
+        div ! attrId "chat_users" $ do
+            h2 $ text "Users"
+            div ! attrId "chat_users_wrap" $
+                foldl (>>) (return unit) $ map ((p ! className "user") <<< renderUser) $ M.values chat.users
     div ! attrId "chat_input" $ do
         span' ! attrId "chat_input_nick" $ text $ "< "++ chat.me ++" >"
         input ! attrId "chat_input_line" ! type' "text"

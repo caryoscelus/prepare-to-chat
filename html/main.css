@@ -8,6 +8,15 @@ body {
     border: 0;
 }
 
+h1 {
+    font-size: 130%;
+    margin-left: 10%;
+}
+
+h2 {
+    font-size: 110%;
+}
+
 div#chat {
     width: 80%;
     padding-left: 10%;
@@ -32,8 +41,10 @@ div#chat_messages_wrap {
 div#chat_users {
     width: 30%;
     display: table-cell;
-    height: 100%;
-    overflow: scroll;
+}
+
+div#chat_users_wrap {
+    overflow: auto;
 }
 
 div#chat_input {
