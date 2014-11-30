@@ -43,7 +43,7 @@ getMonsterAct _ _ = id
 speakingAct :: User -> String -> ChatArrow
 speakingAct mob author =
         sendMessage mob quote
-    >>> fightUser mob (floor $ (baseHit + randomRange baseHit))
+    >>> fightUser mob ((baseHit + randomRange baseHit)/10)
   where
     quote = randomAuthorQuote author
-    baseHit = M.min (S.length quote) 10
+    baseHit = M.min (S.length quote) 20

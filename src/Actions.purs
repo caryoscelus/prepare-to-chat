@@ -22,10 +22,11 @@ import qualified Data.String as S
 
 import Types
 import Chat
+import Util
 
 fightUser :: User -> Number -> ChatArrow
 fightUser (User mob) n = readMe $ \(Just (User user)) ->
-        changeMe (userChangeHp ((+) (-n)))
+        changeMe (userChangeHp ((+) (-(floor $ n + user.level * n / 2))))
     >>> makeMessage Me mob.nick (hitMsg ++ user.nick)
   where
     hitMsg = if n == 0 then "misses " else "hits "

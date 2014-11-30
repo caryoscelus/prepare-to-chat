@@ -47,6 +47,7 @@ type UserT =
     , maxHp :: Number
     , monster :: String
     , prepared :: Number
+    , level :: Number
     }
 data User = User UserT
 
@@ -59,6 +60,7 @@ user =
     , maxHp : 0
     , monster : ""
     , prepared : 0
+    , level : 0
     }
 
 userUser :: String -> User

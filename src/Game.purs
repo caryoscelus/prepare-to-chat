@@ -68,15 +68,17 @@ checkLooser = readMe $ \user ->
 spawnMonsters :: ChatArrow
 spawnMonsters (Chat chat) = addUsers (spawn $ spawnType chat.time) $ Chat chat
 
-spawnType :: Number -> Maybe String
-spawnType n | n < 12 = if ieq n 5 then Just "weak rat" else Nothing
-spawnType n | n < 30 = if (n % 1 < eps) && (n % 5 < eps) then Just "rat" else Nothing
-spawnType n | n < 33 = if ieq n 32 then Just ("speaking "++randomAuthor unit) else Nothing
+spawnType :: Number -> Maybe (Tuple String Number)
+spawnType n | n < 12 = if ieq n 5 then Just (Tuple "weak rat" 0) else Nothing
+spawnType n | n < 30 = if (n % 1 < eps) && (n % 5 < eps) then Just (Tuple "rat" (randomRange 2)) else Nothing
+spawnType n | n < 33 = if ieq n 32 then Just (Tuple ("speaking "++randomAuthor unit) 1) else Nothing
+spawnType n | n < 43 = if ieq n 42 then Just (Tuple ("speaking "++randomAuthor unit) 3) else Nothing
+spawnType n | n < 53 = if ieq n 52 then Just (Tuple ("speaking "++randomAuthor unit) 5) else Nothing
 spawnType _ = Nothing
 
-spawn :: Maybe String -> [User]
+spawn :: Maybe (Tuple String Number) -> [User]
 spawn Nothing = []
-spawn (Just monsterType) = [monsterUser monsterType]
+spawn (Just (Tuple monsterType lvl)) = [monsterUser monsterType lvl]
 
 monstersAct :: ChatArrow
 monstersAct (Chat chat) = foldl (flip monsterAct) (Chat chat) (M.values chat.users)
@@ -114,10 +116,11 @@ stripSpeaking s =
         then S.drop 9 s
         else s
 
-monsterUser :: String -> User
-monsterUser s = let mhp = getMonsterHp s in User $ user
+monsterUser :: String -> Number -> User
+monsterUser s lvl = let mhp = getMonsterHp s in User $ user
     { nick = stripSpeaking s
     , maxHp = mhp
     , hp = mhp
     , monster = s
+    , level = lvl
     }
