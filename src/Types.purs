@@ -23,7 +23,7 @@ import Math (min)
 
 import Debug
 
-data MessageType = Normal | Me | Status | System | Unknown
+data MessageType = Normal | Me | Status | Help | Unknown
 
 type Time = Number
 

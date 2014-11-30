@@ -71,6 +71,7 @@ messageParse :: String -> Tuple MessageType String
 messageParse s =
     case s of
         _ | startsWith "/me " s -> Tuple Me (rest s)
+        _ | startsWith "/help" s-> Tuple Help s
         _ | startsWith "/" s    -> Tuple Unknown s
         _                       -> Tuple Normal s
   where
