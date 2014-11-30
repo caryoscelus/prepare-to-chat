@@ -70,10 +70,10 @@ spawnMonsters (Chat chat) = addUsers (spawn $ spawnType chat.time) $ Chat chat
 
 spawnType :: Number -> Maybe (Tuple String Number)
 spawnType n | n < 12 = if ieq n 5 then Just (Tuple "weak rat" 0) else Nothing
-spawnType n | n < 30 = if (n % 1 < eps) && (n % 5 < eps) then Just (Tuple "rat" (randomRange 2)) else Nothing
-spawnType n | n < 33 = if ieq n 32 then Just (Tuple ("speaking "++randomAuthor unit) 1) else Nothing
-spawnType n | n < 43 = if ieq n 42 then Just (Tuple ("speaking "++randomAuthor unit) 3) else Nothing
-spawnType n | n < 53 = if ieq n 52 then Just (Tuple ("speaking "++randomAuthor unit) 5) else Nothing
+spawnType n | n < 27 = if (n % 1 < eps) && (n % 5 < eps) then Just (Tuple "rat" (randomRange 2)) else Nothing
+spawnType n | n < 28 = if ieq n 27 then Just (Tuple ("speaking "++randomAuthor unit) 1) else Nothing
+spawnType n | n < 48 = if ieq n 47 then Just (Tuple ("speaking "++randomAuthor unit) 3) else Nothing
+spawnType n | n < 68 = if ieq n 67 then Just (Tuple ("speaking "++randomAuthor unit) 5) else Nothing
 spawnType _ = Nothing
 
 spawn :: Maybe (Tuple String Number) -> [User]
@@ -100,14 +100,15 @@ userPrepares = changeMe $ userChangePrepared ((+)1)
 
 userHits :: String -> ChatArrow
 userHits s = readMe $ \(Just (User me)) ->
-        changeUser (userChangeHp ((+)(-((1+me.prepared) * randomRange 2)))) name
+        changeUser (userChangeHp ((+)(-((1+randomRange me.prepared)*me.level)))) name
+    >>> ifDead (changeMe gainExp) name
     >>> changeMe (userChangePrepared (const 0))
   where
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s
 
 userHeals :: ChatArrow
 userHeals = readMe $ \(Just (User me)) ->
-        changeMe (userChangeHp ((+)(1+randomRange 1+me.prepared*3)))
+        changeMe (userChangeHp ((+)((1+randomRange me.prepared+me.prepared+me.level*2)*3)))
     >>> changeMe (userChangePrepared (const 0))
 
 stripSpeaking :: String -> String

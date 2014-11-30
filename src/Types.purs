@@ -48,6 +48,7 @@ type UserT =
     , monster :: String
     , prepared :: Number
     , level :: Number
+    , exp :: Number
     }
 data User = User UserT
 
@@ -61,6 +62,7 @@ user =
     , monster : ""
     , prepared : 0
     , level : 0
+    , exp : 0
     }
 
 userUser :: String -> User
@@ -68,6 +70,7 @@ userUser s = User $ user
     { nick = s
     , hp = 80
     , maxHp = 80
+    , level = 1
     }
 
 userChangeHp :: (Number -> Number) -> UserArrow
@@ -75,6 +78,12 @@ userChangeHp f (User user) = User $ user { hp = min (f user.hp) user.maxHp }
 
 userChangePrepared :: (Number -> Number) -> UserArrow
 userChangePrepared f (User user) = User $ user { prepared = f user.prepared }
+
+gainExp :: UserArrow
+gainExp (User user) = let newExp = user.exp + 1 in
+    if newExp >= 3
+        then User $ user { exp = 0, level = user.level+1 }
+        else User $ user { exp = newExp }
 
 data Chat = Chat
     { users :: Map String User
@@ -117,6 +126,12 @@ readUsers f (Chat chat) = f chat.users $ Chat chat
 
 readUser :: (Maybe User -> ChatArrow) -> String -> ChatArrow
 readUser f name = readUsers $ f <<< lookup name
+
+ifDead :: ChatArrow -> String -> ChatArrow
+ifDead f = readUser $ \u ->
+    case u of
+        Nothing -> f
+        _       -> id
 
 readMe :: (Maybe User -> ChatArrow) -> ChatArrow
 readMe f (Chat chat) = readUser f chat.me $ Chat chat

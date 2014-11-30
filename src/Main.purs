@@ -81,8 +81,9 @@ doSendMessage = do
         (Tuple Help _)      -> do
             return unit
             withChat $ makeMessage Normal "1337 1" "here's how to use chat:"
-            withChat $ makeMessage Normal "1337 1" "enter message and press enter."
-            withChat $ makeMessage Normal "1337 1" "To do something, use \"/me [action] [object]\" command.."
+            withChat $ makeMessage Normal "1337 1" "enter message and press [enter]"
+            withChat $ makeMessage Normal "1337 1" "to do something, use \"/me [action] [object]\" command.."
+            withChat $ makeMessage Normal "1337 1" "if it's supported by browser, you can use [up] and [down] for message history"
         (Tuple Unknown "")  -> trace "unknown command"
         _                   -> trace "completely unknown command"
     ch <- getGlobalChat
