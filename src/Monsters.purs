@@ -18,6 +18,7 @@
 module Monsters where
 
 import qualified Data.String as S
+import qualified Math as M
 
 import Actions
 import Types
@@ -45,4 +46,4 @@ speakingAct mob author =
     >>> fightUser mob (floor $ (baseHit + randomRange baseHit) / 4)
   where
     quote = randomAuthorQuote author
-    baseHit = S.length quote
+    baseHit = M.min (S.length quote) 80

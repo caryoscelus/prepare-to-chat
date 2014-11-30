@@ -94,7 +94,7 @@ processLooseWin = do
 
 userLost :: forall t. Eff (dom :: DOM, chate :: ChatE | t) Unit
 userLost = do
-    alert "YOU LOST\nreload page to start over.."
+    alert "YOU HAVE LOST\nreload page to start over.."
     return unit
 
 userWon :: forall t. Eff (dom :: DOM, chate :: ChatE | t) Unit

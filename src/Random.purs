@@ -28,6 +28,9 @@ foreign import random1
     }
     """ :: Unit -> Number
 
+random :: Unit -> Number
+random = random1
+
 foreign import randomRange
     """
     function randomRange (n) {

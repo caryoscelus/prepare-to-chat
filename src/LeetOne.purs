@@ -90,15 +90,19 @@ leetAct leet (Chat chat) =
                    >>> sendMessage leet "you need to fight to survive"
         t | ieq t 4     -> sendMessage leet "if you're ready, i'll show you example"
         t | ieq t 5     -> sendMessage leet "see this weak rat? try to *hit* it so that it doesn't hit you!"
-        t | ieq t 7     -> sendMessage leet "now that rat was a weak one. real rats are tougher"
-        t | ieq t 8     -> sendMessage leet "to fight other monsters effectively, you must *prepare*"
-        t | ieq t 9     -> sendMessage leet "and if you are in deep trouble, try to *heal*"
-        t | ieq t 10    -> sendMessage leet "now fight and don't get killed!"
+        t | ieq t 9     -> sendMessage leet "now that rat was a weak one. real rats are tougher"
+        t | ieq t 10    -> sendMessage leet "to fight other monsters effectively, you must *prepare*"
+        t | ieq t 11     -> sendMessage leet "and if you are in deep trouble, try to *heal*"
+        t | ieq t 12    -> sendMessage leet "now fight and don't get killed!"
         t | ieq t 40    -> meMessage leet "feels someone powerful arriving!"
         otherwise       -> id
     
     killMonsterAction name = readUser (\user ->
-        case user of
-            Just _  -> sendMessage leet $ randomMessage killMessages ++ name
-            Nothing -> id
+        if random unit > 0.6
+            then
+                case user of
+                    Just _  -> sendMessage leet $ randomMessage killMessages ++ name
+                    Nothing -> id
+            else
+                id
         ) name
