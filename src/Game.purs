@@ -104,9 +104,9 @@ userHeals = readMe $ \(Just (User me)) ->
     >>> changeMe (userChangePrepared (const 0))
 
 monsterUser :: String -> User
-monsterUser s = User $ user
+monsterUser s = let mhp = getMonsterHp s in User $ user
     { nick = s
-    , maxHp = getMonsterHp s
-    , hp = getMonsterHp s
+    , maxHp = mhp
+    , hp = mhp
     , monster = s
     }
