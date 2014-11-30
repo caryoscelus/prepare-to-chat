@@ -83,16 +83,20 @@ monsterAct (User user) = getMonsterAct user.monster $ User user
 
 processUserTurn :: String -> ChatArrow
 processUserTurn s | startsWith "prepare" s = userPrepares
-processUserTurn s | startsWith "hit" s = userFights s
+processUserTurn s | startsWith "hit" s = userHits s
+processUserTurn s | startsWith "heal" s = userHeals
 processUserTurn _ = id
 
 userPrepares :: ChatArrow
 userPrepares = id
 
-userFights :: String -> ChatArrow
-userFights s = debug ("hit " ++ name) $ changeUser (userChangeHp ((+)(-1))) name
+userHits :: String -> ChatArrow
+userHits s = debug ("hit " ++ name) $ changeUser (userChangeHp ((+)(-1))) name
   where
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s
+
+userHeals :: ChatArrow
+userHeals = changeMe (userChangeHp ((+)1))
 
 monsterUser :: String -> User
 monsterUser s = User { nick : s, maxHp : getMonsterHp s, hp : getMonsterHp s, monster : s }
