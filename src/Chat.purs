@@ -39,6 +39,7 @@ import Text.Smolder.Renderer.String (render)
 
 import Util
 import Types
+import Eps
 
 emptyChat :: Chat
 emptyChat = Chat { users : M.fromList [], messages : [], me : "??", time : 0, inputLog : [], inputLogA : [], inputNow : "" }
@@ -175,13 +176,26 @@ renderMessage (Message msg) =
             text " "
             span' ! className "msg_text" $ text $ msg.nick ++ " ?? " ++ msg.text
 
+renderUser :: User -> Markup
+renderUser (User user) = do
+    span' ! className "user_nick" $ text user.nick
+    case user.hp / user.maxHp of
+        n | ieq n 1 -> return unit
+        n | n > 0.8 -> wounded "lightly wounded"
+        n | n > 0.5 -> wounded "moderately wounded"
+        n | n > 0.3 -> wounded "severely wounded"
+        n | n > 0   -> wounded "almost dead"
+        _           -> wounded "walking corpse"
+  where
+    wounded t = span' ! className "user_stat" $ text $ " (" ++ t ++ ")"
+
 fullChatRender :: Chat -> String
 fullChatRender (Chat chat) = render $ do
     div ! attrId "chat_main" $ do
         div ! attrId "chat_messages" $
             div ! attrId "chat_messages_wrap" $
                 foldl (>>) (return unit) $ map ((p ! className "message") <<< renderMessage) chat.messages
-        div ! attrId "chat_users" $ foldl (>>) (return unit) $ map ((p ! className "user") <<< text) $ M.keys chat.users
+        div ! attrId "chat_users" $ foldl (>>) (return unit) $ map ((p ! className "user") <<< renderUser) $ M.values chat.users
     div ! attrId "chat_input" $ do
         span' ! attrId "chat_input_nick" $ text $ "< "++ chat.me ++" >"
         input ! attrId "chat_input_line" ! type' "text"
