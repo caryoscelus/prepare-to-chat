@@ -49,7 +49,7 @@ killDead :: ChatArrow
 killDead (Chat chat) = showDead (M.values >>> filter userDead $ chat.users) >>> removeDead $ Chat chat
 
 showDead :: [User] -> ChatArrow
-showDead = flip $ foldl (flip $ \user -> meMessage user "dies")
+showDead = flip $ foldl (flip $ \user -> statusMessage user "dies and exits chat")
 
 removeDead :: ChatArrow
 removeDead = changeUsers $ M.toList >>> filter (not <<< userDead <<< snd) >>> M.fromList

@@ -48,7 +48,7 @@ addUser :: User -> ChatArrow
 addUser (User user) (Chat chat) =
     if M.member user.nick chat.users
         then addUser (User $ user { nick = user.nick++"_" } ) (Chat chat)
-        else Chat $ chat { users = M.insert user.nick (User user) chat.users }
+        else makeMessage Status user.nick "enters chat" $ Chat $ chat { users = M.insert user.nick (User user) chat.users }
 
 addUsers :: [User] -> ChatArrow
 addUsers users chat = foldl (flip addUser) chat users

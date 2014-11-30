@@ -30,3 +30,6 @@ sendMessage (User user) = makeMessage Normal user.nick
 
 meMessage :: User -> String -> ChatArrow
 meMessage (User user) = makeMessage Me user.nick
+
+statusMessage :: User -> String -> ChatArrow
+statusMessage (User user) = makeMessage Status user.nick
