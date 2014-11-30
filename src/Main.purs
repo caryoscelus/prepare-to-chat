@@ -136,3 +136,9 @@ setupChat :: forall t. Eff (dom :: DOM, trace :: Trace | t) Chat
 setupChat = do
     name <- prompt "Your name?"
     return $ addUser leetOne $ useredChat name
+
+iAmStuck :: forall t. Eff (dom :: DOM | t) Unit
+iAmStuck = do
+    Just div <- queryElement "#hint"
+    setInnerHTML "<p>Type /help and hit Enter.</p>" div
+    return unit

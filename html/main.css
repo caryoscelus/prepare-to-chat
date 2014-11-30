@@ -8,6 +8,12 @@ body {
     border: 0;
 }
 
+a {
+    color: #444;
+    font-weight: bold;
+    text-decoration: none;
+}
+
 h1 {
     font-size: 130%;
     margin-left: 10%;
@@ -15,6 +21,10 @@ h1 {
 
 h2 {
     font-size: 110%;
+}
+
+#hint p {
+    text-align: center;
 }
 
 div#chat {
