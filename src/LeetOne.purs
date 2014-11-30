@@ -30,6 +30,11 @@ leetAct :: User -> ChatArrow
 leetAct leet (Chat chat) = action $ Chat chat
   where
     action = case chat.time of
-        t | ieq t 0 -> sendMessage leet $ "hello, " ++ chat.me ++ "!"
-        t | ieq t 1 -> sendMessage leet "i am the l33t one!"
+        t | ieq t 0 -> sendMessage leet $ "hello, " ++ chat.me ++ ", welcome to our humble chat!"
+        t | ieq t 1 -> meMessage leet "is the l33t one!"
+        t | ieq t 2 -> meMessage leet "will guide you to the victory!"
+        t | ieq t 3 -> sendMessage leet "so, first thing you need to know:"
+                   >>> sendMessage leet "you need to fight to survive"
+        t | ieq t 4 -> sendMessage leet "if you're ready, i'll show you example"
+        t | ieq t 5 -> sendMessage leet "see this weak rat? try to *hit* it so that it doesn't hit you!"
         otherwise   -> id

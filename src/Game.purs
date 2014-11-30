@@ -57,7 +57,7 @@ spawnMonsters :: ChatArrow
 spawnMonsters (Chat chat) = addUsers (spawn $ spawnType chat.time) $ Chat chat
 
 spawnType :: Number -> Maybe String
-spawnType n | n < 10 = Nothing
+spawnType n | n < 3 = Nothing
 spawnType n | n < 40 = if (n % 1 < eps) && (n % 5 < eps) then Just "rat" else Nothing
 spawnType _ = Nothing
 
@@ -76,14 +76,14 @@ monsterAct (User user) = getMonsterAct user.monster $ User user
 
 processUserTurn :: String -> ChatArrow
 processUserTurn s | startsWith "prepare" s = userPrepares
-processUserTurn s | startsWith "fight" s = userFights s
+processUserTurn s | startsWith "hit" s = userFights s
 processUserTurn _ = id
 
 userPrepares :: ChatArrow
 userPrepares = id
 
 userFights :: String -> ChatArrow
-userFights s = debug ("fight " ++ name) $ changeUser (userChangeHp ((+)(-1))) name
+userFights s = debug ("hit " ++ name) $ changeUser (userChangeHp ((+)(-1))) name
   where
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s
 
