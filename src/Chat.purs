@@ -27,7 +27,7 @@ import Data.Traversable
 import Data.Array
 import Data.Maybe
 import qualified Data.Map as M
--- import Data.Tuple
+import Data.Tuple
 
 import Data.DOM.Simple.Types
 import Data.DOM.Simple.Element (querySelector, setInnerHTML, focus)
@@ -67,9 +67,18 @@ makeMessage t nick text (Chat chat) = putMessage (Message
     , t    : t
     }) $ Chat chat
 
-userMessage :: String -> ChatArrow
-userMessage text (Chat chat) =
-        makeMessage Normal chat.me text
+messageParse :: String -> Tuple MessageType String
+messageParse s =
+    case s of
+        _ | startsWith "/me " s -> Tuple Me (rest s)
+        _ | startsWith "/" s    -> Tuple Unknown s
+        _                       -> Tuple Normal s
+  where
+    rest = consumeUnspace >>> consumeSpace
+
+userMessage :: MessageType -> String -> ChatArrow
+userMessage t text (Chat chat) =
+        makeMessage t chat.me text
     >>> reLog
     >>> changeLog ((:) text)
       $ Chat chat

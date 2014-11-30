@@ -65,16 +65,18 @@ doSendMessage :: Eff (dom :: DOM, trace :: Trace, chate :: ChatE) Unit
 doSendMessage = do
     Just el <- queryElement "#chat_input_line"
     msg <- value $ el
-    case msg of
-        ""                          -> trace "empty message"
-        _ | startsWith "/me " msg   -> do
-            withChat $ userMessage msg
-            withChat $ processUserTurn $ S.drop 4 msg
+    let parsed = messageParse msg
+    case parsed of
+        (Tuple Normal "")   -> trace "empty message"
+        (Tuple Normal txt)  -> do
+            withChat $ userMessage Normal msg
             withChat $ processNPCs 1.0
-        _ | startsWith "/" msg      -> trace "unknown command"
-        otherwise                   -> do
-            withChat $ userMessage msg
+        (Tuple Me txt)      -> do
+            withChat $ userMessage Me txt
+            withChat $ processUserTurn txt
             withChat $ processNPCs 1.0
+        (Tuple Unknown "")  -> trace "unknown command"
+        _                   -> trace "completely unknown command"
     ch <- getGlobalChat
     chatReload ch
     return unit

@@ -22,7 +22,7 @@ import Data.Map
 
 import Debug
 
-data MessageType = Normal | Me | Status | System
+data MessageType = Normal | Me | Status | System | Unknown
 
 type Time = String
 
