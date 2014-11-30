@@ -18,7 +18,8 @@
     "purescript-smolder": "bodil/purescript-smolder",
     "purescript-foldable-traversable": "purescript/purescript-foldable-traversable",
     "purescript-strings": "purescript/purescript-strings",
-    "purescript-math": "purescript/purescript-math"
+    "purescript-math": "purescript/purescript-math",
+    "wikiquote-fortune-collection": "maandree/wikiquote-fortune-collection"
   },
   "resolutions": {
     "purescript-maps": "0.1.3"
