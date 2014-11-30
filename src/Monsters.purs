@@ -36,14 +36,14 @@ getMonsterHp _ = 1
 
 getMonsterAct :: String -> User -> ChatArrow
 getMonsterAct "1337" leet = leetAct leet
-getMonsterAct "rat" rat = fightUser rat 1
+getMonsterAct "rat" rat = fightUser rat (randomRange 2)
 getMonsterAct s mob | startsWith "speaking " s = speakingAct mob (S.drop 9 s)
 getMonsterAct _ _ = id
 
 speakingAct :: User -> String -> ChatArrow
 speakingAct mob author =
         sendMessage mob quote
-    >>> fightUser mob (floor $ (baseHit + randomRange baseHit) / 4)
+    >>> fightUser mob (floor $ (baseHit + randomRange baseHit))
   where
     quote = randomAuthorQuote author
-    baseHit = M.min (S.length quote) 80
+    baseHit = M.min (S.length quote) 10

@@ -26,7 +26,9 @@ import Chat
 fightUser :: User -> Number -> ChatArrow
 fightUser (User mob) n = readMe $ \(Just (User user)) ->
         changeMe (userChangeHp ((+) (-n)))
-    >>> makeMessage Me mob.nick ("hits " ++ user.nick)
+    >>> makeMessage Me mob.nick (hitMsg ++ user.nick)
+  where
+    hitMsg = if n == 0 then "misses " else "hits "
 
 sendMessage :: User -> String -> ChatArrow
 sendMessage (User user) = makeMessage Normal user.nick
