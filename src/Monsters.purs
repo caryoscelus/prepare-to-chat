@@ -28,7 +28,8 @@ import Speaking
 
 -- !! UNSAFE RANDOM
 getMonsterHp :: String -> Number
-getMonsterHp "rat" = 4 + randomRange 3
+getMonsterHp "rat" = 5 + randomRange 3
+getMonsterHp "weak rat" = 3 + randomRange 2
 getMonsterHp s | startsWith "speaking " s = 20 + randomRange 10
 getMonsterHp _ = 1
 

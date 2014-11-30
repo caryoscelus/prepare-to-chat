@@ -70,8 +70,9 @@ spawnMonsters (Chat chat) = addUsers (spawn $ spawnType chat.time) $ Chat chat
 
 spawnType :: Number -> Maybe String
 spawnType n | n < 4 = Nothing
-spawnType n | n < 30 = if (n % 1 < eps) && (n % 5 < eps) then Just "rat" else Nothing
-spawnType n | n < 33 = if ieq n 32 then Just ("speaking "++randomAuthor unit) else Nothing
+spawnType n | n < 10 = if ieq n 4 then Just "weak rat" else Nothing
+spawnType n | n < 40 = if (n % 1 < eps) && (n % 5 < eps) then Just "rat" else Nothing
+spawnType n | n < 43 = if ieq n 42 then Just ("speaking "++randomAuthor unit) else Nothing
 spawnType _ = Nothing
 
 spawn :: Maybe String -> [User]
