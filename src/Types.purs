@@ -19,6 +19,7 @@ module Types where
 
 import Data.Maybe
 import Data.Map
+import Math (min)
 
 import Debug
 
@@ -43,16 +44,17 @@ instance showMessage :: Show Message where
 data User = User
     { nick :: String
     , hp :: Number
+    , maxHp :: Number
     , monster :: String
     }
 
 type UserArrow = User -> User
 
 userUser :: String -> User
-userUser s = User { nick : s, hp : 80, monster : "user" }
+userUser s = User { nick : s, hp : 80, maxHp : 80, monster : "user" }
 
 userChangeHp :: (Number -> Number) -> UserArrow
-userChangeHp f (User user) = User $ user { hp = f user.hp }
+userChangeHp f (User user) = User $ user { hp = min (f user.hp) user.maxHp }
 
 data Chat = Chat
     { users :: Map String User

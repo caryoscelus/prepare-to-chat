@@ -95,4 +95,4 @@ userFights s = debug ("hit " ++ name) $ changeUser (userChangeHp ((+)(-1))) name
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s
 
 monsterUser :: String -> User
-monsterUser s = User { nick : s, hp : getMonsterHp s, monster : s }
+monsterUser s = User { nick : s, maxHp : getMonsterHp s, hp : getMonsterHp s, monster : s }

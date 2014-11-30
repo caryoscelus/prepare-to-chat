@@ -17,7 +17,8 @@
     "purescript-simple-dom": "caryoscelus/purescript-simple-dom",
     "purescript-smolder": "bodil/purescript-smolder",
     "purescript-foldable-traversable": "purescript/purescript-foldable-traversable",
-    "purescript-strings": "purescript/purescript-strings"
+    "purescript-strings": "purescript/purescript-strings",
+    "purescript-math": "purescript/purescript-math"
   },
   "resolutions": {
     "purescript-maps": "0.1.3"
