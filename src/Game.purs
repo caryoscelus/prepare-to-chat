@@ -99,7 +99,9 @@ userHits s = readMe $ \(Just (User me)) ->
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s
 
 userHeals :: ChatArrow
-userHeals = changeMe $ userChangeHp ((+)(1+randomRange 1))
+userHeals = readMe $ \(Just (User me)) ->
+        changeMe (userChangeHp ((+)(1+randomRange 1+me.prepared*3)))
+    >>> changeMe (userChangePrepared (const 0))
 
 monsterUser :: String -> User
 monsterUser s = User $ user
