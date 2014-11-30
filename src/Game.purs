@@ -57,7 +57,7 @@ spawnMonsters :: ChatArrow
 spawnMonsters (Chat chat) = addUsers (spawn $ spawnType chat.time) $ Chat chat
 
 spawnType :: Number -> Maybe String
-spawnType n | n < 3 = Nothing
+spawnType n | n < 4 = Nothing
 spawnType n | n < 40 = if (n % 1 < eps) && (n % 5 < eps) then Just "rat" else Nothing
 spawnType _ = Nothing
 
