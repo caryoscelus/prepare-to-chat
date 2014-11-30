@@ -100,10 +100,11 @@ userStatusReload chat = do
 renderStatus :: Chat -> String
 renderStatus (Chat chat) =
     case M.lookup chat.me chat.users of
-        Just user   -> "[you are alive ("++hpMsg user++"), "++prepMsg user++" ]"
+        Just user   -> "[you are level "++lvlMsg user++", you are alive ("++hpMsg user++"), "++prepMsg user++" ]"
         Nothing     -> "[you are dead]"
   where
     hpMsg (User user) = show user.hp ++ "/" ++ show user.maxHp
+    lvlMsg (User user) = show user.level
     prepMsg (User user) = case user.prepared of
         0 -> "you are not prepared"
         1 -> "you are slightly prepared"

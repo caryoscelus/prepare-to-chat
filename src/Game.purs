@@ -48,7 +48,12 @@ stepNPCs =
 --     >>> checkWinner
 
 killDead :: ChatArrow
-killDead (Chat chat) = showDead (M.values >>> filter userDead $ chat.users) >>> removeDead $ Chat chat
+killDead (Chat chat) = showDead dUsers >>> gainExpDead dUsers >>> removeDead $ Chat chat
+  where
+    dUsers = M.values >>> filter userDead $ chat.users
+
+gainExpDead :: [User] -> ChatArrow
+gainExpDead l = changeMe $ gainExp (length l)
 
 showDead :: [User] -> ChatArrow
 showDead = flip $ foldl (flip $ \user -> statusMessage user "dies and exits chat")
@@ -101,7 +106,6 @@ userPrepares = changeMe $ userChangePrepared ((+)1)
 userHits :: String -> ChatArrow
 userHits s = readMe $ \(Just (User me)) ->
         changeUser (userChangeHp ((+)(-((1+randomRange me.prepared)*me.level)))) name
-    >>> ifDead (changeMe gainExp) name
     >>> changeMe (userChangePrepared (const 0))
   where
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s

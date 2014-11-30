@@ -79,9 +79,9 @@ userChangeHp f (User user) = User $ user { hp = min (f user.hp) user.maxHp }
 userChangePrepared :: (Number -> Number) -> UserArrow
 userChangePrepared f (User user) = User $ user { prepared = f user.prepared }
 
-gainExp :: UserArrow
-gainExp (User user) = let newExp = user.exp + 1 in
-    if newExp >= 3
+gainExp :: Number -> UserArrow
+gainExp n (User user) = let newExp = user.exp + n in
+    if newExp >= 2
         then User $ user { exp = 0, level = user.level+1 }
         else User $ user { exp = newExp }
 
