@@ -62,8 +62,8 @@ userDead (User user) = debug (user.nick ++ " " ++ show user.hp) $ user.hp <= 0
 checkLooser :: ChatArrow
 checkLooser = readMe $ \user ->
     case user of
-        Just u  -> debug "NOT LOST" $ id
-        Nothing -> debug "LOST" $ changeLost (const true)
+        Just u  -> id
+        Nothing -> changeLost (const true)
 
 spawnMonsters :: ChatArrow
 spawnMonsters (Chat chat) = addUsers (spawn $ spawnType chat.time) $ Chat chat

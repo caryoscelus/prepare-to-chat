@@ -18,10 +18,12 @@
 module LeetOne where
 
 import Data.Maybe
+import Data.Array
 
 import Types
 import Actions
 import Eps
+import Random
 
 leetOne :: User
 leetOne = User $ user
@@ -31,10 +33,38 @@ leetOne = User $ user
     , monster = "1337"
     }
 
+healMessages =
+    [ "drinks white potion"
+    , "zaps a quaint wand"
+    , "casts spell"
+    , "kneels and offers prayer to some god"
+    ]
+
+hurtMessages =
+    [ ", why d0 U hurt me?!"
+    , ", WHy Do Y0u hUr1 m3!11"
+    , ", Th4t hUrts!"
+    , ", St0p d01ng THIS!!!"
+    , ", U R MORON!"
+    , ", U b100dy B4ST4RD!"
+    , ", you will pay for this..."
+    ]
+
+-- UNSAFE
+randomMessage :: [String] -> String
+randomMessage s = maybe "does something" id $ s !! randomRange (length s - 1)
+
 leetAct :: User -> ChatArrow
-leetAct leet (Chat chat) = action $ Chat chat
+leetAct leet (Chat chat) = hurtAction >>> timedAction $ Chat chat
   where
-    action = case chat.time of
+    hurtAction = case leet of
+        User u | u.hp /= u.maxHp ->
+                changeUser (userChangeHp $ const u.maxHp) u.nick
+            >>> sendMessage leet (chat.me ++ randomMessage hurtMessages)
+            >>> meMessage leet (randomMessage healMessages)
+            >>> meMessage leet "is completely healed."
+        _ -> id
+    timedAction = case chat.time of
         t | ieq t 0 -> sendMessage leet $ "hello, " ++ chat.me ++ ", welcome to our humble chat!"
         t | ieq t 1 -> meMessage leet "is the l33t one!"
         t | ieq t 2 -> meMessage leet "will guide you to the victory!"
