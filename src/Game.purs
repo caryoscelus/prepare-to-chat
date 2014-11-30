@@ -92,8 +92,8 @@ userPrepares :: ChatArrow
 userPrepares = changeMe $ userChangePrepared ((+)1)
 
 userHits :: String -> ChatArrow
-userHits s =
-        changeUser (userChangeHp ((+)(-(1+randomRange 1)))) name
+userHits s = readMe $ \(Just (User me)) ->
+        changeUser (userChangeHp ((+)(-((1+me.prepared) * randomRange 2)))) name
     >>> changeMe (userChangePrepared (const 0))
   where
     name = consumeSpace >>> consumeUnspace >>> consumeSpace $ s

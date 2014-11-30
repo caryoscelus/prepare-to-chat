@@ -101,3 +101,12 @@ changeUser f name = changeUsers $ alter (maybe Nothing $ Just <<< f) name
 
 changeLog :: ([String] -> [String]) -> ChatArrow
 changeLog f (Chat chat) = Chat $ chat { inputLog = f chat.inputLog }
+
+readUsers :: (Map String User -> ChatArrow) -> ChatArrow
+readUsers f (Chat chat) = f chat.users $ Chat chat
+
+readUser :: (Maybe User -> ChatArrow) -> String -> ChatArrow
+readUser f name = readUsers $ f <<< lookup name
+
+readMe :: (Maybe User -> ChatArrow) -> ChatArrow
+readMe f (Chat chat) = readUser f chat.me $ Chat chat
