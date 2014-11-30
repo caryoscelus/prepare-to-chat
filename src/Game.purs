@@ -33,7 +33,7 @@ import Actions
 import Random
 
 processNPCs :: Number -> ChatArrow
-processNPCs t chat = applyN t stepNPCs chat
+processNPCs t = applyN t stepNPCs
 
 stepNPCs :: ChatArrow
 stepNPCs =

@@ -70,11 +70,11 @@ doSendMessage = do
         (Tuple Normal "")   -> trace "empty message"
         (Tuple Normal txt)  -> do
             withChat $ userMessage Normal msg
-            withChat $ processNPCs 1.0
+            withChat $ processNPCs 1
         (Tuple Me txt)      -> do
             withChat $ userMessage Me msg
             withChat $ processUserTurn txt
-            withChat $ processNPCs 1.0
+            withChat $ processNPCs 1
         (Tuple Unknown "")  -> trace "unknown command"
         _                   -> trace "completely unknown command"
     ch <- getGlobalChat
