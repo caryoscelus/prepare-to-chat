@@ -43,7 +43,7 @@ stepNPCs =
     >>> changeTime ((+) 1)
     >>> monstersAct
     >>> killDead
---     >>> checkLooser
+    >>> checkLooser
     >>> spawnMonsters
 --     >>> checkWinner
 
@@ -59,9 +59,11 @@ removeDead = changeUsers $ M.toList >>> filter (not <<< userDead <<< snd) >>> M.
 userDead :: User -> Boolean
 userDead (User user) = debug (user.nick ++ " " ++ show user.hp) $ user.hp <= 0
 
--- checkLooser :: ChatArrow
--- checkLooser = changeMe $ \mu ->
---     mu >>= \user -> if userDead user then Nothing else Just user
+checkLooser :: ChatArrow
+checkLooser = readMe $ \user ->
+    case user of
+        Just u  -> debug "NOT LOST" $ id
+        Nothing -> debug "LOST" $ changeLost (const true)
 
 spawnMonsters :: ChatArrow
 spawnMonsters (Chat chat) = addUsers (spawn $ spawnType chat.time) $ Chat chat

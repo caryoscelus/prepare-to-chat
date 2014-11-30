@@ -36,8 +36,8 @@ import Data.DOM.Simple.Element (querySelector)
 
 foreign import promptI
     """
-    function promptI(a) {
-        return function(){
+    function promptI (a) {
+        return function () {
             return window.prompt(a)
         }
     }
@@ -45,6 +45,18 @@ foreign import promptI
 
 prompt :: forall t. String -> Eff t String
 prompt = promptI
+
+foreign import alertI
+    """
+    function alertI (a) {
+        return function () {
+            window.alert(a);
+        }
+    }
+    """ :: forall t. String -> Eff t Unit
+
+alert :: forall t. String -> Eff t Unit
+alert = alertI
 
 queryElement :: forall t. String -> Eff (dom :: DOM | t) (Maybe HTMLElement)
 queryElement s = document globalWindow >>= querySelector s

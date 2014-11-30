@@ -42,7 +42,7 @@ import Types
 import Eps
 
 emptyChat :: Chat
-emptyChat = Chat { users : M.fromList [], messages : [], me : "??", time : 0, inputLog : [], inputLogA : [], inputNow : "" }
+emptyChat = Chat { users : M.fromList [], messages : [], me : "??", time : 0, inputLog : [], inputLogA : [], inputNow : "", lost : false, won : false }
 
 addUser :: User -> ChatArrow
 addUser (User user) (Chat chat) =

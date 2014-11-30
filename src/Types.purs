@@ -82,6 +82,8 @@ data Chat = Chat
     , inputLog :: [String]
     , inputNow :: String
     , inputLogA :: [String]
+    , lost :: Boolean
+    , won :: Boolean
     }
 
 -- type ChatArrow a = Chat -> Tuple Chat a
@@ -101,6 +103,12 @@ changeUser f name = changeUsers $ alter (maybe Nothing $ Just <<< f) name
 
 changeLog :: ([String] -> [String]) -> ChatArrow
 changeLog f (Chat chat) = Chat $ chat { inputLog = f chat.inputLog }
+
+changeLost :: (Boolean -> Boolean) -> ChatArrow
+changeLost f (Chat chat) = Chat $ chat { lost = f chat.lost }
+
+changeWon :: (Boolean -> Boolean) -> ChatArrow
+changeWon f (Chat chat) = Chat $ chat { won = f chat.won }
 
 readUsers :: (Map String User -> ChatArrow) -> ChatArrow
 readUsers f (Chat chat) = f chat.users $ Chat chat

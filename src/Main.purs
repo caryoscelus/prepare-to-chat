@@ -79,7 +79,26 @@ doSendMessage = do
         _                   -> trace "completely unknown command"
     ch <- getGlobalChat
     chatReload ch
+    processLooseWin
     return unit
+
+processLooseWin :: forall t. Eff (dom :: DOM, chate :: ChatE | t) Unit
+processLooseWin = do
+    Chat ch <- getGlobalChat
+    if ch.lost
+        then userLost
+        else
+            if ch.won
+                then userWon
+                else return unit
+
+userLost :: forall t. Eff (dom :: DOM, chate :: ChatE | t) Unit
+userLost = do
+    alert "YOU LOST\nreload page to start over.."
+    return unit
+
+userWon :: forall t. Eff (dom :: DOM, chate :: ChatE | t) Unit
+userWon = return unit
 
 onLoad :: DOMEvent -> Eff (dom :: DOM, trace :: Trace, chate :: ChatE) Unit
 onLoad _ = do
