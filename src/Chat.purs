@@ -30,8 +30,8 @@ import qualified Data.Map as M
 import Data.Tuple
 
 import Data.DOM.Simple.Types
-import Data.DOM.Simple.Element (querySelector, setInnerHTML, focus)
-import Data.DOM.Simple.Window (globalWindow, document, location, getLocation)
+import Data.DOM.Simple.Element (querySelector, setInnerHTML, focus, setAttribute)
+import Data.DOM.Simple.Window (globalWindow, document, location, getLocation, innerHeight)
 
 import Text.Smolder.HTML (div, h1, h2, p, form, input, br, textarea)
 import Text.Smolder.HTML.Attributes (className, type', value)
@@ -116,8 +116,16 @@ chatReload chat = do
     Just chatDiv <- queryElement "#chat"
     setInnerHTML (fullChatRender chat) chatDiv
     chatFocus
+    chatResize
     chatScroll
     return unit
+
+chatResize :: forall t. Eff (dom :: DOM, trace :: Trace | t) Unit
+chatResize = do
+    Just div <- queryElement "#chat_messages_wrap"
+    height <- innerHeight globalWindow
+    trace $ show height
+    setAttribute "style" ("height:" ++ show (height*0.7) ++ "px") div
 
 chatScroll :: forall t. Eff (dom :: DOM | t) Unit
 chatScroll = do
