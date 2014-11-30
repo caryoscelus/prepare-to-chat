@@ -27,6 +27,7 @@ import Data.Array
 import Data.Tuple
 import Data.Char
 import Data.Foldable
+import qualified Math as Math
 
 import Data.DOM.Simple.Document ()
 import Data.DOM.Simple.Types
@@ -88,3 +89,7 @@ applyN n f a = foldl (flip ($)) a $ repeatN n f
 -- maps
 filterM :: forall k v. (Ord k) => (v -> Boolean) -> M.Map k v -> M.Map k v
 filterM f = M.toList >>> filter (snd >>> f) >>> M.fromList
+
+-- reimport floor for Random module
+floor :: Number -> Number
+floor = Math.floor

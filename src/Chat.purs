@@ -20,7 +20,6 @@ module Chat where
 import Debug.Trace (Trace(), trace)
 
 import Control.Monad.Eff
-import Control.Apply ((*>))
 
 import Data.Foldable
 import Data.Traversable

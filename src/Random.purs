@@ -15,18 +15,22 @@
 --  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --
 
-module Monsters where
+-- | THIS IS ABSURDLY UNSAFE IMPERATIVE RANDOM, DO NOT USE!
+module Random where
 
-import Actions
-import Types
-import LeetOne
-import Random
+-- importing Math overrides JS Math, so we import floor through Util
+import Util (floor)
 
--- !! UNSAFE RANDOM
-getMonsterHp :: String -> Number
-getMonsterHp "rat" = 4 + randomRange 3
+foreign import random1
+    """
+    function random1 (_) {
+        return Math.random();
+    }
+    """ :: Unit -> Number
 
-getMonsterAct :: String -> User -> ChatArrow
-getMonsterAct "1337" leet = leetAct leet
-getMonsterAct "rat" rat = fightUser rat 1
-getMonsterAct _ _ = id
+foreign import randomRange
+    """
+    function randomRange (n) {
+        return Math.floor(Math.random()*(n+1));
+    }
+    """ :: Number -> Number
