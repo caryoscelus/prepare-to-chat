@@ -79,7 +79,10 @@ doSendMessage = do
             withChat $ processUserTurn txt
             withChat $ processNPCs 1
         (Tuple Help _)      -> do
-            withChat $ makeMessage Normal "1337 1" "Here's how to use chat: enter message and press enter. To do something, use \"/me <action> <object>\" command.."
+            return unit
+            withChat $ makeMessage Normal "1337 1" "here's how to use chat:"
+            withChat $ makeMessage Normal "1337 1" "enter message and press enter."
+            withChat $ makeMessage Normal "1337 1" "To do something, use \"/me [action] [object]\" command.."
         (Tuple Unknown "")  -> trace "unknown command"
         _                   -> trace "completely unknown command"
     ch <- getGlobalChat
