@@ -77,10 +77,10 @@ messageParse s =
     rest = consumeUnspace >>> consumeSpace
 
 userMessage :: MessageType -> String -> ChatArrow
-userMessage t text (Chat chat) =
-        makeMessage t chat.me text
+userMessage t msg (Chat chat) =
+        makeMessage t chat.me (messageParse >>> snd $ msg)
     >>> reLog
-    >>> changeLog ((:) text)
+    >>> changeLog ((:) msg)
       $ Chat chat
 
 reLog :: ChatArrow

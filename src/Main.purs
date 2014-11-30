@@ -72,7 +72,7 @@ doSendMessage = do
             withChat $ userMessage Normal msg
             withChat $ processNPCs 1.0
         (Tuple Me txt)      -> do
-            withChat $ userMessage Me txt
+            withChat $ userMessage Me msg
             withChat $ processUserTurn txt
             withChat $ processNPCs 1.0
         (Tuple Unknown "")  -> trace "unknown command"
