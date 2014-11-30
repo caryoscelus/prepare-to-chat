@@ -145,12 +145,34 @@ span' = Parent "span"
 userGetNick :: User -> String
 userGetNick (User u) = u.nick
 
+renderMessage :: Message -> Markup
+renderMessage (Message msg) =
+    case msg.t of
+        Normal -> do
+            span' ! className "msg_date" $ text msg.time
+            text " "
+            span' ! className "msg_nick" $ text msg.nick
+            text " "
+            span' ! className "msg_text" $ text msg.text
+        Me -> do
+            span' ! className "msg_date" $ text msg.time
+            text " "
+            span' ! className "msg_me"   $ text $ msg.nick ++ " " ++ msg.text
+        Status -> do
+            span' ! className "msg_date" $ text msg.time
+            text " "
+            span' ! className "msg_stat" $ text $ msg.nick ++ " " ++ msg.text
+        _ -> do
+            span' ! className "msg_date" $ text msg.time
+            text " "
+            span' ! className "msg_text" $ text $ msg.nick ++ " ?? " ++ msg.text
+
 fullChatRender :: Chat -> String
 fullChatRender (Chat chat) = render $ do
     div ! attrId "chat_main" $ do
         div ! attrId "chat_messages" $
             div ! attrId "chat_messages_wrap" $
-                foldl (>>) (return unit) $ map ((p ! className "message") <<< text <<< show) chat.messages
+                foldl (>>) (return unit) $ map ((p ! className "message") <<< renderMessage) chat.messages
         div ! attrId "chat_users" $ foldl (>>) (return unit) $ map ((p ! className "user") <<< text) $ M.keys chat.users
     div ! attrId "chat_input" $ do
         span' ! attrId "chat_input_nick" $ text $ "< "++ chat.me ++" >"
