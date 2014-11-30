@@ -25,6 +25,7 @@ import Data.Maybe
 import Data.Tuple
 import Data.Array
 import qualified Data.String as S
+import qualified Data.Map as M
 
 import Data.DOM.Simple.Document ()
 import Data.DOM.Simple.Element (setInnerHTML, value, setValue)
@@ -79,8 +80,28 @@ doSendMessage = do
         _                   -> trace "completely unknown command"
     ch <- getGlobalChat
     chatReload ch
+    userStatusReload ch
     processLooseWin
     return unit
+
+userStatusReload :: forall t. Chat -> Eff (dom :: DOM | t) Unit
+userStatusReload chat = do
+    Just div <- queryElement "#player_status"
+    setInnerHTML (renderStatus chat) div
+
+renderStatus :: Chat -> String
+renderStatus (Chat chat) =
+    case M.lookup chat.me chat.users of
+        Just user   -> "[you are alive ("++hpMsg user++"), "++prepMsg user++" ]"
+        Nothing     -> "[you are dead]"
+  where
+    hpMsg (User user) = show user.hp ++ "/" ++ show user.maxHp
+    prepMsg (User user) = case user.prepared of
+        0 -> "you are not prepared"
+        1 -> "you are slightly prepared"
+        2 -> "you are quite prepared"
+        3 -> "you are prepared"
+        _ -> "you are PREPARED"
 
 processLooseWin :: forall t. Eff (dom :: DOM, chate :: ChatE | t) Unit
 processLooseWin = do
