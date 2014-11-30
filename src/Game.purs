@@ -30,13 +30,6 @@ import Monsters
 import Debug
 import Eps
 
-repeatN :: forall a. Number -> a -> [a]
-repeatN n a | n < 1 = []
-repeatN n a = a : repeatN (n-1) a
-
-applyN :: forall a. Number -> (a -> a) -> a -> a
-applyN n f a = foldl (flip ($)) a $ repeatN n f
-
 processNPCs :: Number -> ChatArrow
 processNPCs t chat = applyN t stepNPCs chat
 

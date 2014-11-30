@@ -61,7 +61,7 @@ putMessage msg (Chat chat) = Chat $ chat { messages = chat.messages ++ [msg] }
 
 makeMessage :: MessageType -> String -> String -> ChatArrow
 makeMessage t nick text (Chat chat) = putMessage (Message
-    { time : show chat.time
+    { time : chat.time
     , nick : nick
     , text : text
     , t    : t
@@ -145,25 +145,28 @@ span' = Parent "span"
 userGetNick :: User -> String
 userGetNick (User u) = u.nick
 
+showTime :: Number -> String
+showTime = show >>> addLead "0" 4
+
 renderMessage :: Message -> Markup
 renderMessage (Message msg) =
     case msg.t of
         Normal -> do
-            span' ! className "msg_date" $ text msg.time
-            text " "
+            span' ! className "msg_date" $ text $ showTime msg.time
+            span' ! className "msg_angl" $ text " <"
             span' ! className "msg_nick" $ text msg.nick
-            text " "
+            span' ! className "msg_angl" $ text "> "
             span' ! className "msg_text" $ text msg.text
         Me -> do
-            span' ! className "msg_date" $ text msg.time
+            span' ! className "msg_date" $ text $ showTime msg.time
             text " "
             span' ! className "msg_me"   $ text $ msg.nick ++ " " ++ msg.text
         Status -> do
-            span' ! className "msg_date" $ text msg.time
+            span' ! className "msg_date" $ text $ showTime msg.time
             text " "
             span' ! className "msg_stat" $ text $ msg.nick ++ " " ++ msg.text
         _ -> do
-            span' ! className "msg_date" $ text msg.time
+            span' ! className "msg_date" $ text $ showTime msg.time
             text " "
             span' ! className "msg_text" $ text $ msg.nick ++ " ?? " ++ msg.text
 

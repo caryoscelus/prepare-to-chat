@@ -23,6 +23,7 @@ import Control.Monad.Eff
 import Data.Maybe
 import qualified Data.String as S
 import Data.Char
+import Data.Foldable
 
 import Data.DOM.Simple.Document ()
 import Data.DOM.Simple.Types
@@ -68,3 +69,15 @@ consumeSpace = S.dropWhile isSpace
 
 consumeUnspace :: String -> String
 consumeUnspace = S.dropWhile (not <<< isSpace)
+
+addLead :: String -> Number -> String -> String
+addLead ch n s = S.joinWith "" (repeatN (n - S.length s) ch) ++ s
+
+
+-- arrays
+repeatN :: forall a. Number -> a -> [a]
+repeatN n a | n < 1 = []
+repeatN n a = a : repeatN (n-1) a
+
+applyN :: forall a. Number -> (a -> a) -> a -> a
+applyN n f a = foldl (flip ($)) a $ repeatN n f

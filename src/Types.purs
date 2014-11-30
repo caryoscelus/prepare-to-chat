@@ -24,7 +24,7 @@ import Debug
 
 data MessageType = Normal | Me | Status | System | Unknown
 
-type Time = String
+type Time = Number
 
 data Message = Message
     { time :: Time
@@ -58,7 +58,7 @@ data Chat = Chat
     { users :: Map String User
     , messages :: [Message]
     , me :: String
-    , time :: Number
+    , time :: Time
     , inputLog :: [String]
     , inputNow :: String
     , inputLogA :: [String]
