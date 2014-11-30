@@ -71,3 +71,12 @@ span.msg_angl {
     font-size: 70%;
     color: #555;
 }
+
+span.msg_me {
+    font-style: italic;
+}
+
+span.msg_stat {
+    font-style: italic;
+    color: #555;
+}

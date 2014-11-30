@@ -159,12 +159,10 @@ renderMessage (Message msg) =
             span' ! className "msg_text" $ text msg.text
         Me -> do
             span' ! className "msg_date" $ text $ showTime msg.time
-            text " "
-            span' ! className "msg_me"   $ text $ msg.nick ++ " " ++ msg.text
+            span' ! className "msg_me"   $ text $ " * " ++ msg.nick ++ " " ++ msg.text
         Status -> do
             span' ! className "msg_date" $ text $ showTime msg.time
-            text " "
-            span' ! className "msg_stat" $ text $ msg.nick ++ " " ++ msg.text
+            span' ! className "msg_stat" $ text $ " * " ++ msg.nick ++ " " ++ msg.text
         _ -> do
             span' ! className "msg_date" $ text $ showTime msg.time
             text " "
