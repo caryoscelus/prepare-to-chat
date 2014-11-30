@@ -22,6 +22,9 @@ import Control.Monad.Eff
 
 import Data.Maybe
 import qualified Data.String as S
+import qualified Data.Map as M
+import Data.Array
+import Data.Tuple
 import Data.Char
 import Data.Foldable
 
@@ -81,3 +84,7 @@ repeatN n a = a : repeatN (n-1) a
 
 applyN :: forall a. Number -> (a -> a) -> a -> a
 applyN n f a = foldl (flip ($)) a $ repeatN n f
+
+-- maps
+filterM :: forall k v. (Ord k) => (v -> Boolean) -> M.Map k v -> M.Map k v
+filterM f = M.toList >>> filter (snd >>> f) >>> M.fromList

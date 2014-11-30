@@ -29,6 +29,7 @@ import Chat
 import Monsters
 import Debug
 import Eps
+import Actions
 
 processNPCs :: Number -> ChatArrow
 processNPCs t chat = applyN t stepNPCs chat
@@ -44,7 +45,13 @@ stepNPCs =
 --     >>> checkWinner
 
 killDead :: ChatArrow
-killDead = changeUsers $ M.toList >>> filter (not <<< userDead <<< snd) >>> M.fromList
+killDead (Chat chat) = showDead (M.values >>> filter userDead $ chat.users) >>> removeDead $ Chat chat
+
+showDead :: [User] -> ChatArrow
+showDead = flip $ foldl (flip $ \user -> meMessage user "dies")
+
+removeDead :: ChatArrow
+removeDead = changeUsers $ M.toList >>> filter (not <<< userDead <<< snd) >>> M.fromList
 
 userDead :: User -> Boolean
 userDead (User user) = debug (user.nick ++ " " ++ show user.hp) $ user.hp <= 0
