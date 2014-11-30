@@ -36,8 +36,8 @@ processNPCs t chat = applyN t stepNPCs chat
 
 stepNPCs :: ChatArrow
 stepNPCs =
-        changeTime ((+) 1)
-    >>> killDead
+        killDead
+    >>> changeTime ((+) 1)
     >>> monstersAct
     >>> killDead
 --     >>> checkLooser
