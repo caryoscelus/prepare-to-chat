@@ -130,6 +130,7 @@ onLoad _ = do
     withChat $ monstersAct
     chat' <- getGlobalChat
     chatReload chat'
+    userStatusReload chat'
     return unit
 
 setupChat :: forall t. Eff (dom :: DOM, trace :: Trace | t) Chat
