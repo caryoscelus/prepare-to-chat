@@ -45,7 +45,7 @@ stepNPCs =
     >>> killDead
     >>> checkLooser
     >>> spawnMonsters
---     >>> checkWinner
+    >>> checkWinner
 
 killDead :: ChatArrow
 killDead (Chat chat) = showDead dUsers >>> gainExpDead dUsers >>> removeDead $ Chat chat
@@ -91,8 +91,11 @@ monstersAct (Chat chat) = foldl (flip monsterAct) (Chat chat) (M.values chat.use
 monsterAct :: User -> ChatArrow
 monsterAct (User user) = getMonsterAct user.monster $ User user
 
--- checkWinner :: ChatArrow
--- checkWinner = id
+checkWinner :: ChatArrow
+checkWinner (Chat chat) =
+    if chat.time > 67 && (length $ M.values chat.users) == 2 && not chat.lost
+       then Chat $ chat { won = true }
+       else Chat chat
 
 processUserTurn :: String -> ChatArrow
 processUserTurn s | startsWith "prepare" s = userPrepares
