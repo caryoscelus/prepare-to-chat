@@ -95,8 +95,8 @@ leetAct leet (Chat chat) =
         t | ieq t 11     -> sendMessage leet "and if you are in deep trouble, try to *heal*"
         t | ieq t 12    -> sendMessage leet "now fight and don't get killed!"
         t | ieq t 26    -> meMessage leet "feels someone quite powerful arriving!"
-        t | ieq t 46    -> meMessage leet "feels someone powerful arriving!"
-        t | ieq t 66    -> meMessage leet "feels someone very powerful arriving!"
+        t | ieq t 40    -> meMessage leet "feels someone powerful arriving!"
+        t | ieq t 50    -> meMessage leet "feels someone very powerful arriving!"
         otherwise       -> id
     
     killMonsterAction name = readUser (\user ->

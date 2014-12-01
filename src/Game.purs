@@ -77,8 +77,8 @@ spawnType :: Number -> Maybe (Tuple String Number)
 spawnType n | n < 12 = if ieq n 5 then Just (Tuple "weak rat" 0) else Nothing
 spawnType n | n < 27 = if (n % 1 < eps) && (n % 5 < eps) then Just (Tuple "rat" (randomRange 2)) else Nothing
 spawnType n | n < 28 = if ieq n 27 then Just (Tuple ("speaking "++randomAuthor unit) 1) else Nothing
-spawnType n | n < 48 = if ieq n 47 then Just (Tuple ("speaking "++randomAuthor unit) 3) else Nothing
-spawnType n | n < 68 = if ieq n 67 then Just (Tuple ("speaking "++randomAuthor unit) 5) else Nothing
+spawnType n | n < 43 = if ieq n 42 then Just (Tuple ("speaking "++randomAuthor unit) 3) else Nothing
+spawnType n | n < 53 = if ieq n 52 then Just (Tuple ("speaking "++randomAuthor unit) 5) else Nothing
 spawnType _ = Nothing
 
 spawn :: Maybe (Tuple String Number) -> [User]
@@ -93,7 +93,7 @@ monsterAct (User user) = getMonsterAct user.monster $ User user
 
 checkWinner :: ChatArrow
 checkWinner (Chat chat) =
-    if chat.time > 67 && (length $ M.values chat.users) == 2 && not chat.lost
+    if chat.time > 54 && (length $ M.values chat.users) == 2 && not chat.lost
        then Chat $ chat { won = true }
        else Chat chat
 
