@@ -150,5 +150,11 @@ setupChat = do
 iAmStuck :: forall t. Eff (dom :: DOM | t) Unit
 iAmStuck = do
     Just div <- queryElement "#hint"
-    setInnerHTML "<p>Type /help and hit Enter.</p>" div
+    setInnerHTML "<p>Type /help and hit Enter. <a onClick=\"javascript:PS.Main.iAmStillStuck()\">SPOIL ME!</a></p>" div
+    return unit
+
+iAmStillStuck :: forall t. Eff (dom :: DOM | t) Unit
+iAmStillStuck = do
+    Just div <- queryElement "#hint"
+    setInnerHTML "<p>send message \"/me prepares\" to prepare</p><p>send message \"/me hits [target nick]\" to hit</p><p>send message \"/me heals\" to heals yourself</p><p>power of hitting and healing depends on your level and preparation</p>" div
     return unit
